@@ -1,0 +1,224 @@
+*, *::before, *::after {
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: black;
+    color: white;
+    margin: 0;
+    padding: 2rem;
+}
+
+h1 {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+}
+
+button {
+    padding: 6px 12px;
+    margin: 0 4px;
+    border: none;
+    cursor: pointer;
+}
+
+button:hover {
+    opacity: 0.8;
+}
+
+th, td {
+    padding: 0.75rem;
+    text-align: left;
+}
+
+th {
+    background-color: #3f3f3f;
+    color: #cbcbcb;
+    font-weight: 600;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 1rem;
+}
+
+
+/* active tabs for dashboard */
+.user-tab, .role-tab {
+    padding: 0.5rem 1rem;
+    border: none;
+    background: none;
+    font-weight: 500;
+    color: #555;
+    cursor: pointer;
+    transition: 0.3s;
+    border-bottom: 3px solid transparent;
+}
+
+.user-tab.active, .role-tab.active {
+    border-color: #5283ed;
+    color: #5283ed;
+    font-weight: bold;
+}
+
+
+/* create user/role button  */
+.create-buttons {
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+}
+
+.create-button {
+    background-color: white;
+    color: black;
+    font-weight: bold;
+    border: 2px solid white;
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
+}
+
+
+
+/* edit and delete button */
+.edit-button, .delete-button {
+    font-size: 10px;
+    font-weight: bold;
+    border-radius: 6px;
+}
+
+.edit-button {
+    color: black;
+}
+
+.delete-button {
+    background-color: rgb(186, 5, 5);
+    color: white;
+}
+
+
+/* delete confirmation */
+.modal-overlay {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    color: black;
+}
+
+.modal-content {
+    background: white;
+    padding: 30px;
+    border-radius: 8px;
+    min-width: 300px;
+    text-align: center;
+}
+
+.modal-buttons {
+    margin-top: 20px;
+}
+
+.modal-buttons button {
+    padding: 10px 20px;
+    margin: 0 10px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.modal-buttons .ok-btn {
+    background-color: rgb(207, 5, 5);
+    color: white;
+}
+
+.modal-buttons .cancel-btn {
+    background-color: gray;
+    color: white;
+}
+
+
+/* user and role form */
+.for-form {
+    display: flex;
+    justify-content: center;
+}
+
+.title {
+    font-weight: 800;
+}
+
+.form-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: black;
+    color: white;
+    padding: 2rem;
+}
+
+.form-wrapper {
+    width: 100%;
+    max-width: 500px;
+    background-color: #111;
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(255, 255, 255, 0.1);
+}
+
+.form-wrapper h2 {
+    margin-bottom: 1.5rem;
+    text-align: center;
+}
+
+.form-wrapper label {
+    display: block;
+    margin-bottom: 0.5rem;
+}
+
+.form-wrapper .input-text, .form-wrapper select {
+    width: 100%;
+    padding: 0.5rem;
+    margin-bottom: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background-color: #fff;
+    color: #000;
+    box-sizing: border-box;
+}
+
+.checkbox-group {
+    margin-bottom: 1rem;
+    width: 100px;
+}
+
+.input-box {
+    margin-right: 1rem;
+} 
+
+.checkbox-label {
+    margin-bottom: 0.5rem;
+    font-weight: 400;
+    cursor: pointer;
+}
+
+.form-wrapper button {
+    padding: 0.75rem 2rem;
+    background-color: white;
+    color: black;
+    font-weight: bold;
+    border-radius: 6px;
+    display: block;
+    margin: 1rem auto 0;
+}
+
+.form-error {
+    color: red;
+    margin-bottom: 1rem;
+    text-align: center;
+}
