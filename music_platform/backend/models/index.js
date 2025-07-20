@@ -3,48 +3,51 @@ const Album = require('./Album');
 const Artist = require('./Artist');
 const PlayHistory = require('./PlayHistory');
 const Playlist = require('./Playlist');
+const PlaylistSong = require('./PlaylistSong');
 const Song = require('./Song');
+const SongArtist = require('./SongArtist');
 const Subscriber = require('./Subscriber');
+const SubscriberArtist = require('./SubscriberArtist');
 const Subscription = require('./Subscription');
 const SubscriptionHistory = require('./SubscriptionHistory');
 
-// Subscriber and Subscription
+// subscriber and subscription
 Subscriber.hasMany(Subscription, { foreignKey: 'subscriber_id', onDelete: 'cascade' });
 Subscription.belongsTo(Subscriber, { foreignKey: 'subscriber_id' });
 
-// Subscriber and SubscriptionHistory
+// subscriber and subscriptionHistory
 Subscriber.hasMany(SubscriptionHistory, { foreignKey: 'subscriber_id', onDelete: 'cascade' });
 SubscriptionHistory.belongsTo(Subscriber, { foreignKey: 'subscriber_id' });
 
-// Subscription and SubscriptionHistory
+// subscription and subscriptionHistory
 Subscription.hasMany(SubscriptionHistory, { foreignKey: 'subscription_id', onDelete: 'cascade' });
 SubscriptionHistory.belongsTo(Subscription, { foreignKey: 'subscription_id' });
 
-// Artist and Album
+// artist and album
 Artist.hasMany(Album, { foreignKey: 'artist_id', onDelete: 'cascade' });
 Album.belongsTo(Artist, { foreignKey: 'artist_id' });
 
-// Album and Song
+// album and song
 Album.hasMany(Song, { foreignKey: 'album_id', onDelete: 'cascade' });
 Song.belongsTo(Album, { foreignKey: 'album_id' });
 
-// Artist and Song (optional direct link)
+// artist and song 
 Artist.hasMany(Song, { foreignKey: 'artist_id', onDelete: 'cascade' });
 Song.belongsTo(Artist, { foreignKey: 'artist_id' });
 
-// Subscriber and Playlist
+// subscriber and playlist
 Subscriber.hasMany(Playlist, { foreignKey: 'subscriber_id', onDelete: 'cascade' });
 Playlist.belongsTo(Subscriber, { foreignKey: 'subscriber_id' });
 
-// Playlist and Song (many-to-many)
+// playlist and song 
 Playlist.belongsToMany(Song, { through: 'PlaylistSongs', foreignKey: 'playlist_id' });
 Song.belongsToMany(Playlist, { through: 'PlaylistSongs', foreignKey: 'song_id' });
 
-// Subscriber and PlayHistory
+// subscriber and playHistory
 Subscriber.hasMany(PlayHistory, { foreignKey: 'subscriber_id', onDelete: 'cascade' });
 PlayHistory.belongsTo(Subscriber, { foreignKey: 'subscriber_id' });
 
-// Song and PlayHistory
+// song and playHistory
 Song.hasMany(PlayHistory, { foreignKey: 'song_id', onDelete: 'cascade' });
 PlayHistory.belongsTo(Song, { foreignKey: 'song_id' });
 
@@ -54,8 +57,11 @@ module.exports = {
     Artist,
     PlayHistory,
     Playlist,
+    PlaylistSong,
     Song,
+    SongArtist,
     Subscriber,
+    SubscriberArtist,
     Subscription,
     SubscriptionHistory
 };
