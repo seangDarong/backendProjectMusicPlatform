@@ -27,6 +27,11 @@ const Subscriber = sequelize.define('Subscriber', {
     passwordHash: {
         type: DataTypes.STRING,
         allowNull: false
+    },
+    email: {
+        type: DataTypes.STRING,
+        unique: true,
+        allowNull: false
     }
 }, {
     tableName: 'subscriber',

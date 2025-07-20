@@ -1,7 +1,7 @@
 const express = require('express');
 const cors = require('cors');
 const { sequelize } = require('./models');
-
+const userRouter = require("./routes/user.js");
 const app = express();
 app.use(express.json());
 
@@ -10,6 +10,8 @@ app.use(cors({
 }));
 
 const port = 3000;
+
+app.use('/api/users', userRouter);
 
 sequelize.sync({ alter: true }).then(() => {
     console.log('Database synced successfully.');
