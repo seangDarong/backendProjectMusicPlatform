@@ -26,7 +26,7 @@ create table subscription_history (
 	subscriber_id int not null,
 	subscription_id int not null, 
 	start_date date not null,
-	end_data date not null,
+	end_date date not null,
 	foreign key (subscriber_id) references subscriber(subscriber_id) on delete cascade ,
 	foreign key (subscription_id) references subscription(subscription_id) on delete cascade 
 );
