@@ -58,3 +58,6 @@ artistRouter.delete('/:id', ArtistController.delete);
 
 module.exports = artistRouter;
 
+
+module.exports = artistRouter;
+

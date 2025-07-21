@@ -5,6 +5,7 @@ const { sequelize } = require('./models');
 
 const userRouter = require("./routes/user.js");
 
+
 const playlistRouter = require("./routes/playlist.js");
 const songRouter = require("./routes/song.js");
 const albumRouter = require("./routes/album.js");
@@ -17,6 +18,10 @@ const songRouter = require("./routes/song.js");
 const artistRouter = require("./routes/artist.js");
 const albumRouter = require("./routes/album.js");
 
+
+const songRouter = require("./routes/song.js");
+const artistRouter = require("./routes/artist.js");
+const albumRouter = require("./routes/album.js");
 app.use(express.json());
 
 app.use(cors());
@@ -33,12 +38,10 @@ app.use("/api/playhistory", playHistoryRouter);
 const port = 3000;
 
 
-
 app.use('/api/users', userRouter);
 app.use('/api/songs', songRouter);
 app.use('/api/artists', artistRouter);
 app.use('/api/albums', albumRouter);
-
 
 sequelize.sync({ alter: true }).then(() => {
     console.log('Database synced successfully.');
