@@ -16,7 +16,6 @@ const app = express();  // <-- initialize app first
 const songRouter = require("./routes/song.js");
 const artistRouter = require("./routes/artist.js");
 const albumRouter = require("./routes/album.js");
-const app = express();
 
 app.use(express.json());
 
