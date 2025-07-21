@@ -1,4 +1,4 @@
-#drop database music_platform;
+drop database if exists music_platform;
 create database music_platform;
 use music_platform;
 
@@ -122,5 +122,7 @@ create table users (
 	role_id int not null,
 	foreign key (role_id) references roles(role_id) on delete cascade
 );
+
+INSERT INTO subscriber (username, name, dob, country, passwordHash) VALUES ('testuser', 'Test User', '2000-01-01', 'TestCountry', 'testhash');
 
 

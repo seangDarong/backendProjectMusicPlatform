@@ -15,6 +15,10 @@ const Song = sequelize.define('Song', {
         type: DataTypes.INTEGER, 
         allowNull: false 
     },
+    album_id: {
+        type: DataTypes.INTEGER,
+        allowNull: false
+    },
     release_date: { 
         type: DataTypes.DATEONLY, 
         allowNull: false 

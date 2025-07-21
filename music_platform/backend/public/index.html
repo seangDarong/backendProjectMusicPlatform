@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Create Playlist</title>
+</head>
+<body>
+  <h1>Create a Playlist</h1>
+
+  <form id="playlist-form">
+    <input type="text" id="title" placeholder="Title" required />
+    <input type="text" id="description" placeholder="Description" />
+    <label>
+      Public:
+      <input type="checkbox" id="is-public" />
+    </label>
+    <button type="submit">Create</button>
+  </form>
+
+  <p id="status"></p>
+
+  <script>
+    document.getElementById("playlist-form").addEventListener("submit", async (e) => {
+      e.preventDefault();
+
+      const title = document.getElementById("title").value;
+      const description = document.getElementById("description").value;
+      const is_public = document.getElementById("is-public").checked;
+
+      const res = await fetch("/api/playlists", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ title, description, is_public }),
+      });
+
+      const result = await res.json();
+      document.getElementById("status").innerText = res.ok
+        ? `✅ Playlist created with ID: ${result.playlist_id}`
+        : `❌ Error: ${result.message || "Unknown error"}`;
+    });
+  </script>
+</body>
+</html>
