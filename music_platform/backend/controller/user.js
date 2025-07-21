@@ -73,15 +73,16 @@ class UserController {
     //function for user to update their own information 
     static async updateProfile(req,res){
         try{
-            const {name, dob, country} = req.body;
+            const {name, dob, country,username} = req.body;
             const user = await userModel.findByPk(req.user.id);
             if (!user){
-                res.status(404).json({message : "user not found"});
+                return res.status(404).json({message : "user not found"});
             }
             //only update fields if provided
             if (name) user.name = name;
             if (dob) user.dob = dob;
             if (country) user.country = country;
+            if (username) user.username = username;
 
             await user.save();
             res.json({message : "Profile updated"});
@@ -89,6 +90,7 @@ class UserController {
                 res.status(500).json({error:error.message});
             }
     }
+    
     
 }
 
