@@ -17,4 +17,28 @@ router.post('/', async (req, res) => {
   }
 });
 
+// GET /api/albums — List all albums
+router.get('/', async (req, res) => {
+  try {
+    const albums = await Album.findAll();
+    res.json(albums);
+  } catch (err) {
+    console.error('Error fetching albums:', err);
+    res.status(500).json({ message: 'Server error while fetching albums' });
+  }
+});
+
+// GET /api/albums/:albumId/songs — List all songs in an album
+const Song = require('../models/Song');
+router.get('/:albumId/songs', async (req, res) => {
+  try {
+    const { albumId } = req.params;
+    const songs = await Song.findAll({ where: { album_id: albumId } });
+    res.json(songs);
+  } catch (err) {
+    console.error('Error fetching songs for album:', err);
+    res.status(500).json({ message: 'Server error while fetching songs for album' });
+  }
+});
+
 module.exports = router;

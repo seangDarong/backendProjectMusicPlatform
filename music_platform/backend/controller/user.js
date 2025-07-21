@@ -50,7 +50,11 @@ class UserController {
             }
 
             const token = jwt.sign({ id: user.subscriber_id }, process.env.JWT_SECRET, { expiresIn: "1h" });
-            res.status(200).json({message : "Login successful.",token});
+            res.status(200).json({
+              message : "Login successful.",
+              token,
+              userId: user.subscriber_id
+            });
         }catch(error){
             res.status(500).json({message: "server error"});
         }

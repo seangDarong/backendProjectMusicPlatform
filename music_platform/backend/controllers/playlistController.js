@@ -5,12 +5,18 @@ const PlaylistSong = require('../models/PlaylistSong');
 exports.createPlaylist = async (req, res) => {
   try {
     const { title, description, is_public } = req.body;
+    // Use subscriber_id from JWT middleware
+    const subscriber_id = req.user?.id;
+    console.log('Creating playlist for subscriber_id:', subscriber_id);
+    if (!subscriber_id) {
+      return res.status(400).json({ message: "Missing subscriber_id (user not authenticated)" });
+    }
     const playlist = await Playlist.create({
       title,
       description,
       is_public,
       created_at: new Date(),
-      subscriber_id: 1 // hardcoded for now
+      subscriber_id
     });
     res.json(playlist);
   } catch (err) {

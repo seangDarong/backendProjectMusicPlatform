@@ -21,6 +21,10 @@ const Playlist = sequelize.define('Playlist', {
     is_public: { 
         type: DataTypes.BOOLEAN, 
         defaultValue: false 
+    },
+    subscriber_id: {
+        type: DataTypes.INTEGER,
+        allowNull: false
     }
 }, {
     tableName: 'playlist',
