@@ -45,3 +45,16 @@ router.get('/song/:songId', async (req, res) => {
 });
 
 module.exports = router;
+
+const ArtistController = require('../controller/artist');
+
+const artistRouter = express.Router();
+
+artistRouter.post('/', ArtistController.create);
+artistRouter.get('/', ArtistController.getAll);
+artistRouter.get('/:id', ArtistController.getById);
+artistRouter.put('/:id', ArtistController.update);
+artistRouter.delete('/:id', ArtistController.delete);
+
+module.exports = artistRouter;
+
