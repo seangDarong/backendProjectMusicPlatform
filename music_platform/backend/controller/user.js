@@ -4,9 +4,10 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
 class UserController {
+    //a funtion for user to register
     static async register (req,res) {
         const {username, email, password, name, dob, country} = req.body;
-
+        //check for all field to be input to prevent emtpty
         if (!username || !email || !password || !name || !dob || !country) {
             return res.status(400).json({ message: "All fields are required." });
         }
@@ -30,7 +31,7 @@ class UserController {
             res.status(500).json({ message : "Server error" });
         }
     }
-
+    //login function
     static async login(req,res){
         const {email, password} = req.body;
 
@@ -54,6 +55,41 @@ class UserController {
             res.status(500).json({message: "server error"});
         }
     }
+
+    // function for user to view their own profile
+    static async getProfile(req,res) {
+        try{
+            // req.user.id come from the JWT middleware
+            const user = await userModel.findByPk(req.user.id,{
+                attributes: {exclude:['passwordHash']}
+            });
+            if (!user) return res.status(404).json({ message :"User not found"});
+            res.json(user);
+        }catch(error){
+            res.status(500).json({error : error.message});
+        }
+    }
+
+    //function for user to update their own information 
+    static async updateProfile(req,res){
+        try{
+            const {name, dob, country} = req.body;
+            const user = await userModel.findByPk(req.user.id);
+            if (!user){
+                res.status(404).json({message : "user not found"});
+            }
+            //only update fields if provided
+            if (name) user.name = name;
+            if (dob) user.dob = dob;
+            if (country) user.country = country;
+
+            await user.save();
+            res.json({message : "Profile updated"});
+            }catch(error){
+                res.status(500).json({error:error.message});
+            }
+    }
+    
 }
 
 module.exports = UserController;
