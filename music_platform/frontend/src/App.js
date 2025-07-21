@@ -1,5 +1,4 @@
-
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import UserPlaylists from './views/UserPlaylists';
 import Login from './views/Login';
 import Register from './views/Register';
@@ -23,9 +22,9 @@ function ErrorBoundary({ children }) {
 }
 
 function App() {
-  const [token, setToken] = useState(null);
-  const [userId, setUserId] = useState(null);
-  const [view, setView] = useState('login');
+  const [token, setToken] = useState(() => localStorage.getItem('token'));
+  const [userId, setUserId] = useState(() => localStorage.getItem('userId'));
+  const [view, setView] = useState(() => (localStorage.getItem('token') && localStorage.getItem('userId')) ? 'albums' : 'login');
   const [selectedAlbum, setSelectedAlbum] = useState(null);
   const [showCreatePlaylist, setShowCreatePlaylist] = useState(false);
   const [playlistRefresh, setPlaylistRefresh] = useState(0);
@@ -33,7 +32,18 @@ function App() {
   const handleLogin = (tok, uid) => {
     setToken(tok);
     setUserId(uid);
+    localStorage.setItem('token', tok);
+    localStorage.setItem('userId', uid);
     setView('albums');
+  };
+
+  // Optional: Add logout function
+  const handleLogout = () => {
+    setToken(null);
+    setUserId(null);
+    localStorage.removeItem('token');
+    localStorage.removeItem('userId');
+    setView('login');
   };
 
   if (view === 'login') {
@@ -55,6 +65,7 @@ function App() {
             <button onClick={() => { setView('albums'); setSelectedAlbum(null); }} style={{ padding: '0.5rem 1.2rem', borderRadius: 4, border: 'none', background: view === 'albums' ? '#1976d2' : '#eee', color: view === 'albums' ? '#fff' : '#333' }}>Albums</button>
             <button onClick={() => setView('profile')} style={{ padding: '0.5rem 1.2rem', borderRadius: 4, border: 'none', background: view === 'profile' ? '#1976d2' : '#eee', color: view === 'profile' ? '#fff' : '#333' }}>Profile</button>
             <button onClick={() => { setView('playlists'); setShowCreatePlaylist(false); }} style={{ padding: '0.5rem 1.2rem', borderRadius: 4, border: 'none', background: view === 'playlists' ? '#1976d2' : '#eee', color: view === 'playlists' ? '#fff' : '#333' }}>Playlists</button>
+            <button onClick={handleLogout} style={{ padding: '0.5rem 1.2rem', borderRadius: 4, border: 'none', background: '#d32f2f', color: '#fff', marginLeft: 20 }}>Logout</button>
           </nav>
           {view === 'albums' && !selectedAlbum && <Albums token={token} onSelectAlbum={setSelectedAlbum} />}
           {view === 'albums' && selectedAlbum && <AlbumSongs albumId={selectedAlbum} token={token} userId={userId} onBack={() => setSelectedAlbum(null)} />}
