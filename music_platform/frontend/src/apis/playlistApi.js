@@ -7,16 +7,22 @@ export async function addSongToPlaylist(playlistId, songId, token) {
     },
     body: JSON.stringify({ song_id: songId })
   });
+  if (!res.ok) {
+    throw new Error(`HTTP error! status: ${res.status}`);
+  }
   return res.json();
 }
-// API functions for playlist endpoints
 
+// API functions for playlist endpoints
 const API_BASE = 'http://localhost:3000/api';
 
 export async function getUserPlaylists(subscriberId, token) {
   const res = await fetch(`${API_BASE}/playlists/user/${subscriberId}`, {
     headers: { 'Authorization': `Bearer ${token}` }
   });
+  if (!res.ok) {
+    throw new Error(`HTTP error! status: ${res.status}`);
+  }
   return res.json();
 }
 
