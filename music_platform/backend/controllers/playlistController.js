@@ -29,6 +29,19 @@ exports.addSongToPlaylist = async (req, res) => {
   try {
     const { song_id } = req.body;
     const { playlistId } = req.params;
+    
+    // Check if the song is already in the playlist
+    const existingSong = await PlaylistSong.findOne({
+      where: {
+        playlist_id: playlistId,
+        song_id: song_id
+      }
+    });
+    
+    if (existingSong) {
+      return res.status(409).json({ message: 'Song is already in this playlist!' });
+    }
+    
     await PlaylistSong.create({
       playlist_id: playlistId,
       song_id,
@@ -73,7 +86,13 @@ exports.removeSongFromPlaylist = async (req, res) => {
 exports.deletePlaylist = async (req, res) => {
   try {
     const { playlistId } = req.params;
+    
+    // First, remove all songs from the playlist
+    await PlaylistSong.destroy({ where: { playlist_id: playlistId } });
+    
+    // Then, delete the playlist itself
     const deleted = await Playlist.destroy({ where: { playlist_id: playlistId } });
+    
     if (deleted) {
       res.json({ message: 'Playlist deleted!' });
     } else {
@@ -115,5 +134,22 @@ exports.getUserPlaylists = async (req, res) => {
   } catch (err) {
     console.error('Error fetching playlists for user:', err);
     res.status(500).json({ message: 'Server error while fetching playlists for user' });
+  }
+};
+
+exports.getPlaylistDetails = async (req, res) => {
+  try {
+    const { playlistId } = req.params;
+    const playlist = await Playlist.findOne({
+      where: { playlist_id: playlistId }
+    });
+    if (playlist) {
+      res.json(playlist);
+    } else {
+      res.status(404).json({ message: 'Playlist not found' });
+    }
+  } catch (err) {
+    console.error('Error fetching playlist details:', err);
+    res.status(500).json({ message: 'Server error while fetching playlist details' });
   }
 };

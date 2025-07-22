@@ -1,10 +1,14 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { loginUser } from '../apis/userApi';
 
 export default function Login({ onLogin, goToRegister }) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+
+  useEffect(() => {
+    document.title = 'Login - Music Platform';
+  }, []);
 
   const handleSubmit = async e => {
     e.preventDefault();
@@ -18,15 +22,77 @@ export default function Login({ onLogin, goToRegister }) {
   };
 
   return (
-    <div style={{ maxWidth: 400, margin: '3rem auto', fontFamily: 'sans-serif' }}>
-      <h2>Login</h2>
+    <div style={{ maxWidth: 400, margin: '3rem auto', fontFamily: 'sans-serif', background: '#f8f9fa', borderRadius: 8, padding: '2rem', boxShadow: '0 2px 10px rgba(0,0,0,0.1)' }}>
+      <h2 style={{ color: '#2c3e50', marginBottom: '1.5rem', fontSize: '1.8rem', textAlign: 'center' }}>Music Platform</h2>
       <form onSubmit={handleSubmit}>
-        <input type="email" placeholder="Email" value={email} onChange={e => setEmail(e.target.value)} required style={{ width: '100%', marginBottom: 10, padding: 8 }} />
-        <input type="password" placeholder="Password" value={password} onChange={e => setPassword(e.target.value)} required style={{ width: '100%', marginBottom: 10, padding: 8 }} />
-        <button type="submit" style={{ width: '100%', padding: 10, background: '#1976d2', color: '#fff', border: 'none', borderRadius: 4 }}>Login</button>
+        <input 
+          type="email" 
+          placeholder="Email" 
+          value={email} 
+          onChange={e => setEmail(e.target.value)} 
+          required 
+          style={{ 
+            width: '100%', 
+            marginBottom: '1rem', 
+            padding: '0.75rem', 
+            borderRadius: 6, 
+            border: '1px solid #ddd',
+            fontSize: '1rem',
+            boxSizing: 'border-box'
+          }} 
+        />
+        <input 
+          type="password" 
+          placeholder="Password" 
+          value={password} 
+          onChange={e => setPassword(e.target.value)} 
+          required 
+          style={{ 
+            width: '100%', 
+            marginBottom: '1.5rem', 
+            padding: '0.75rem', 
+            borderRadius: 6, 
+            border: '1px solid #ddd',
+            fontSize: '1rem',
+            boxSizing: 'border-box'
+          }} 
+        />
+        <button 
+          type="submit" 
+          style={{ 
+            width: '100%', 
+            padding: '0.75rem', 
+            background: '#3498db', 
+            color: '#fff', 
+            border: 'none', 
+            borderRadius: 6,
+            fontSize: '1rem',
+            cursor: 'pointer',
+            transition: 'background-color 0.2s'
+          }}
+          onMouseEnter={(e) => e.target.style.backgroundColor = '#2980b9'}
+          onMouseLeave={(e) => e.target.style.backgroundColor = '#3498db'}
+        >
+          Login
+        </button>
       </form>
-      <button onClick={goToRegister} style={{ marginTop: 15, background: 'none', border: 'none', color: '#1976d2', textDecoration: 'underline', cursor: 'pointer' }}>Register</button>
-      {error && <div style={{ color: '#d32f2f', marginTop: 10 }}>{error}</div>}
+      <button 
+        onClick={goToRegister} 
+        style={{ 
+          marginTop: '1rem', 
+          background: 'none', 
+          border: 'none', 
+          color: '#3498db', 
+          textDecoration: 'underline', 
+          cursor: 'pointer',
+          fontSize: '1rem',
+          width: '100%',
+          padding: '0.5rem'
+        }}
+      >
+        Don't have an account? Register here
+      </button>
+      {error && <div style={{ color: '#e74c3c', marginTop: '1rem', padding: '0.75rem', background: '#fdf2f2', border: '1px solid #fecaca', borderRadius: 4, textAlign: 'center' }}>{error}</div>}
     </div>
   );
 }

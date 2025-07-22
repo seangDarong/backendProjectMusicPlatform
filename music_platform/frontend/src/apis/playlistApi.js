@@ -7,9 +7,18 @@ export async function addSongToPlaylist(playlistId, songId, token) {
     },
     body: JSON.stringify({ song_id: songId })
   });
+  
   if (!res.ok) {
-    throw new Error(`HTTP error! status: ${res.status}`);
+    const errorData = await res.json().catch(() => ({}));
+    
+    if (res.status === 409) {
+      // Conflict - song already exists
+      throw new Error(errorData.message || 'Song is already in this playlist!');
+    }
+    
+    throw new Error(errorData.message || `HTTP error! status: ${res.status}`);
   }
+  
   return res.json();
 }
 
