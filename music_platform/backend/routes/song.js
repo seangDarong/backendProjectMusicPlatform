@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const SongController = require('../controller/song');
+const SongController = require('../controllers/song');
 
 // GET /api/songs — Get all songs
 router.get('/', SongController.getAll);

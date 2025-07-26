@@ -46,7 +46,7 @@ router.get('/song/:songId', async (req, res) => {
 
 module.exports = router;
 
-const ArtistController = require('../controller/artist');
+const ArtistController = require('../controllers/artist');
 
 const artistRouter = express.Router();
 

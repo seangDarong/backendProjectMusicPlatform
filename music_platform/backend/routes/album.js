@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const AlbumController = require('../controller/album');
+const AlbumController = require('../controllers/album');
 const Song = require('../models/Song');
 
 // GET /api/albums — Get all albums
