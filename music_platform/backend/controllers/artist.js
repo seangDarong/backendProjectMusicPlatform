@@ -1,5 +1,6 @@
 const Artist = require('../models/Artist');
 const Album = require('../models/Album');
+const Song = require('../models/Song');
 
 const ArtistController = {
     async create(req, res) {
