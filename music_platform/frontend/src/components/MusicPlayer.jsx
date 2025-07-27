@@ -44,7 +44,7 @@ const MusicPlayer = ({ currentSong, isPlaying, onPlayPause, onNext, onPrevious, 
       };
       audio.addEventListener('loadeddata', playWhenLoaded);
     }
-  }, [currentSong?.song_id]); // Only trigger when song ID changes
+  }, [currentSong?.song_id, isPlaying]); // Include isPlaying to satisfy ESLint
 
   useEffect(() => {
     const audio = audioRef.current;
@@ -97,9 +97,7 @@ const MusicPlayer = ({ currentSong, isPlaying, onPlayPause, onNext, onPrevious, 
   // For demo purposes, we'll use different test audio files based on song ID
   // In a real app, you'd have actual audio file URLs from your server
   const audioFiles = [
-    'https://www.w3schools.com/html/horse.ogg',
-    'https://www.w3schools.com/html/horse.mp3',
-    'https://sample-videos.com/zip/10/mp3/mp3-SampleAudio_0.4mb.mp3'
+    'https://www.w3schools.com/html/horse.mp3'
   ];
   const audioSrc = audioFiles[currentSong.song_id % audioFiles.length] || audioFiles[0];
 
