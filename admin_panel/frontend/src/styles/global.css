@@ -7,7 +7,7 @@ body {
     background-color: black;
     color: white;
     margin: 0;
-    padding: 2rem;
+    padding: 1rem;
 }
 
 h1 {
@@ -221,4 +221,39 @@ table {
     color: red;
     margin-bottom: 1rem;
     text-align: center;
+}
+
+
+/* sidebar */
+.sidebar {
+    width: 220px;
+    height: 100vh;
+    background-color: black;
+    color: white;
+    padding: 20px;
+    position: fixed;
+    left: 0;
+    top: 0;
+    border-right: solid 1px rgba(255, 255, 255, 0.498);
+}
+
+.sidebar h3 {
+    margin-bottom: 20px;
+    font-size: 20px;
+}
+
+.sidebar ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.sidebar li {
+    margin: 15px 0;
+    cursor: pointer;
+    padding: 8px;
+    border-radius: 5px;
+}
+
+.sidebar li:hover {
+    background-color: #33334d;
 }
