@@ -29,6 +29,19 @@ exports.addSongToPlaylist = async (req, res) => {
   try {
     const { song_id } = req.body;
     const { playlistId } = req.params;
+    
+    // Check if the song is already in the playlist
+    const existingSong = await PlaylistSong.findOne({
+      where: {
+        playlist_id: playlistId,
+        song_id: song_id
+      }
+    });
+    
+    if (existingSong) {
+      return res.status(409).json({ message: 'Song is already in this playlist!' });
+    }
+    
     await PlaylistSong.create({
       playlist_id: playlistId,
       song_id,
@@ -45,9 +58,16 @@ exports.listSongsInPlaylist = async (req, res) => {
   try {
     const { playlistId } = req.params;
     const Song = require('../models/Song');
+    const Artist = require('../models/Artist');
     const playlistSongs = await PlaylistSong.findAll({ where: { playlist_id: playlistId } });
     const songIds = playlistSongs.map(ps => ps.song_id);
-    const songs = await Song.findAll({ where: { song_id: songIds } });
+    const songs = await Song.findAll({ 
+      where: { song_id: songIds },
+      include: {
+        model: Artist,
+        attributes: ['artist_id', 'name', 'country']
+      }
+    });
     res.json(songs);
   } catch (err) {
     console.error('Error fetching songs in playlist:', err);
@@ -115,5 +135,22 @@ exports.getUserPlaylists = async (req, res) => {
   } catch (err) {
     console.error('Error fetching playlists for user:', err);
     res.status(500).json({ message: 'Server error while fetching playlists for user' });
+  }
+};
+
+exports.getPlaylistDetails = async (req, res) => {
+  try {
+    const { playlistId } = req.params;
+    const playlist = await Playlist.findOne({
+      where: { playlist_id: playlistId }
+    });
+    if (playlist) {
+      res.json(playlist);
+    } else {
+      res.status(404).json({ message: 'Playlist not found' });
+    }
+  } catch (err) {
+    console.error('Error fetching playlist details:', err);
+    res.status(500).json({ message: 'Server error while fetching playlist details' });
   }
 };

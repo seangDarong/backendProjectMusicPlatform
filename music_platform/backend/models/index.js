@@ -24,24 +24,24 @@ Subscription.hasMany(SubscriptionHistory, { foreignKey: 'subscription_id', onDel
 SubscriptionHistory.belongsTo(Subscription, { foreignKey: 'subscription_id' });
 
 // artist and album
-Artist.hasMany(Album, { foreignKey: 'artist_id', onDelete: 'cascade' });
-Album.belongsTo(Artist, { foreignKey: 'artist_id' });
+Artist.hasMany(Album, { foreignKey: 'artist_id', onDelete: 'CASCADE' });
+Album.belongsTo(Artist, { foreignKey: 'artist_id', onDelete: 'CASCADE' });
 
 // album and song
-Album.hasMany(Song, { foreignKey: 'album_id', onDelete: 'cascade' });
-Song.belongsTo(Album, { foreignKey: 'album_id' });
+Album.hasMany(Song, { foreignKey: 'album_id', onDelete: 'CASCADE' });
+Song.belongsTo(Album, { foreignKey: 'album_id', onDelete: 'CASCADE' });
 
 // artist and song 
-Artist.hasMany(Song, { foreignKey: 'artist_id', onDelete: 'cascade' });
-Song.belongsTo(Artist, { foreignKey: 'artist_id' });
+Artist.hasMany(Song, { foreignKey: 'artist_id', onDelete: 'CASCADE' });
+Song.belongsTo(Artist, { foreignKey: 'artist_id', onDelete: 'CASCADE' });
 
 // subscriber and playlist
-Subscriber.hasMany(Playlist, { foreignKey: 'subscriber_id', onDelete: 'cascade' });
-Playlist.belongsTo(Subscriber, { foreignKey: 'subscriber_id' });
+Subscriber.hasMany(Playlist, { foreignKey: 'subscriber_id', onDelete: 'CASCADE' });
+Playlist.belongsTo(Subscriber, { foreignKey: 'subscriber_id', onDelete: 'CASCADE' });
 
 // playlist and song 
-Playlist.belongsToMany(Song, { through: 'PlaylistSongs', foreignKey: 'playlist_id' });
-Song.belongsToMany(Playlist, { through: 'PlaylistSongs', foreignKey: 'song_id' });
+Playlist.belongsToMany(Song, { through: 'PlaylistSongs', foreignKey: 'playlist_id', onDelete: 'CASCADE' });
+Song.belongsToMany(Playlist, { through: 'PlaylistSongs', foreignKey: 'song_id', onDelete: 'CASCADE' });
 
 // subscriber and playHistory
 Subscriber.hasMany(PlayHistory, { foreignKey: 'subscriber_id', onDelete: 'cascade' });

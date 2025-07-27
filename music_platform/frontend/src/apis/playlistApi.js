@@ -7,16 +7,31 @@ export async function addSongToPlaylist(playlistId, songId, token) {
     },
     body: JSON.stringify({ song_id: songId })
   });
+  
+  if (!res.ok) {
+    const errorData = await res.json().catch(() => ({}));
+    
+    if (res.status === 409) {
+      // Conflict - song already exists
+      throw new Error(errorData.message || 'Song is already in this playlist!');
+    }
+    
+    throw new Error(errorData.message || `HTTP error! status: ${res.status}`);
+  }
+  
   return res.json();
 }
-// API functions for playlist endpoints
 
+// API functions for playlist endpoints
 const API_BASE = 'http://localhost:3000/api';
 
 export async function getUserPlaylists(subscriberId, token) {
   const res = await fetch(`${API_BASE}/playlists/user/${subscriberId}`, {
     headers: { 'Authorization': `Bearer ${token}` }
   });
+  if (!res.ok) {
+    throw new Error(`HTTP error! status: ${res.status}`);
+  }
   return res.json();
 }
 

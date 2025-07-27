@@ -18,6 +18,9 @@ router.post('/:playlistId/songs', authMiddleware, playlistController.addSongToPl
 // GET /api/playlists/:playlistId/songs — List all songs in a playlist (protected)
 router.get('/:playlistId/songs', authMiddleware, playlistController.listSongsInPlaylist);
 
+// GET /api/playlists/:playlistId — Get playlist details (protected)
+router.get('/:playlistId', authMiddleware, playlistController.getPlaylistDetails);
+
 // POST /api/playhistory — Record a play event (protected)
 router.post('/playhistory', authMiddleware, playHistoryController.recordPlayHistory);
 
