@@ -24,12 +24,44 @@ const MusicPlayer = ({ currentSong, isPlaying, onPlayPause, onNext, onPrevious, 
     };
   }, [onNext]);
 
+  // Reset audio when song changes
+  useEffect(() => {
+    const audio = audioRef.current;
+    if (!audio || !currentSong) return;
+
+    // Reset time and duration when song changes
+    setCurrentTime(0);
+    setDuration(0);
+    
+    // Load the new audio source
+    audio.load();
+    
+    // If it should be playing, start playback once loaded
+    if (isPlaying) {
+      const playWhenLoaded = () => {
+        audio.play().catch(console.error);
+        audio.removeEventListener('loadeddata', playWhenLoaded);
+      };
+      audio.addEventListener('loadeddata', playWhenLoaded);
+    }
+  }, [currentSong?.song_id]); // Only trigger when song ID changes
+
   useEffect(() => {
     const audio = audioRef.current;
     if (!audio) return;
 
     if (isPlaying) {
-      audio.play().catch(console.error);
+      // Only try to play if audio is loaded
+      if (audio.readyState >= 2) { // HAVE_CURRENT_DATA or higher
+        audio.play().catch(console.error);
+      } else {
+        // Wait for audio to load before playing
+        const playWhenReady = () => {
+          audio.play().catch(console.error);
+          audio.removeEventListener('canplay', playWhenReady);
+        };
+        audio.addEventListener('canplay', playWhenReady);
+      }
     } else {
       audio.pause();
     }
@@ -62,9 +94,14 @@ const MusicPlayer = ({ currentSong, isPlaying, onPlayPause, onNext, onPrevious, 
     return null;
   }
 
-  // For demo purposes, we'll use a placeholder audio file
-  // In a real app, you'd have actual audio file URLs
-  const audioSrc = `https://www.soundjay.com/misc/sounds/beep-07.mp3`; // Placeholder
+  // For demo purposes, we'll use different test audio files based on song ID
+  // In a real app, you'd have actual audio file URLs from your server
+  const audioFiles = [
+    'https://www.w3schools.com/html/horse.ogg',
+    'https://www.w3schools.com/html/horse.mp3',
+    'https://sample-videos.com/zip/10/mp3/mp3-SampleAudio_0.4mb.mp3'
+  ];
+  const audioSrc = audioFiles[currentSong.song_id % audioFiles.length] || audioFiles[0];
 
   if (isMinimized) {
     return (
