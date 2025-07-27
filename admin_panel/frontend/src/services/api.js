@@ -60,4 +60,24 @@ export const deleteUser = async (id) => {
     return res.data;
 };
 
+export const fetchSong = async () => {
+    const res = await api.get('/songs');
+    return res.data;
+};
+
+export const createSong = async (songdata) => {
+    const res = await api.post('/songs', songdata);
+    return res.data;
+};
+
+export const updateSong = async (id, songdata) => {
+    const res = await api.put(`/songs/${id}`);
+    return res.data;
+};
+
+export const deleteSong = async (id) => {
+    const res = await api.delete(`/songs/${id}`);
+    return res.data;
+};
+
 export default api;

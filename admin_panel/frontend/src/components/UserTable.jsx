@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { fetchUsers, deleteUser } from '../services/api';
 import { useNavigate } from "react-router-dom";
-import '../styles/global.css'; 
+import '../styles/global.css';  
 
 const UserTable = () => {
     const [users, setUsers] = useState([]);
