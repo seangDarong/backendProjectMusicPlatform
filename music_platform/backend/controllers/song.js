@@ -1,3 +1,6 @@
+const Song = require('../models/Song');
+const Artist = require('../models/Artist');
+const Album = require('../models/Album');
 const { Song, Artist } = require('../models');
 
 const SongController = {
@@ -13,10 +16,14 @@ const SongController = {
   async getAll(req, res) {
     try {
       const songs = await Song.findAll({
-        include: {
+        include: [{
           model: Artist,
           attributes: ['artist_id', 'name', 'country']
-        }
+        },
+        {
+          model: Album,
+          attributes: ['album_id', 'title', 'release_date']
+        }] 
       });
       res.json(songs);
     } catch (error) {
@@ -27,10 +34,14 @@ const SongController = {
   async getById(req, res) {
     try {
       const song = await Song.findByPk(req.params.id, {
-        include: {
+        include: [{
           model: Artist,
           attributes: ['artist_id', 'name', 'country']
-        }
+        },
+        {
+          model: Album,
+          attributes: ['album_id', 'title', 'release_date']
+        }]
       });
       if (!song) return res.status(404).json({ error: 'Song not found' });
       res.json(song);

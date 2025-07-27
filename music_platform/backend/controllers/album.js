@@ -1,6 +1,7 @@
 
 const Album = require('../models/Album');
 const Artist = require('../models/Artist');
+const Song = require('../models/Song');
 
 const AlbumController = {
     async create(req, res) {
@@ -16,7 +17,9 @@ const AlbumController = {
             const albums = await Album.findAll({
                 include: {
                     model: Artist,
-                    attributes: ['artist_id', 'name', 'country']
+                    attributes: ['artist_id', 'name', 'country'],
+                    model: Song,
+                    attributes: ['song_id', 'title', 'duration_in_sec', 'release_date']
                 }
             });
             res.json(albums); 
@@ -29,7 +32,7 @@ const AlbumController = {
             const album = await Album.findByPk(req.params.id, {
                 include: {
                     model: Artist,
-                    attributes: ['artist_id', 'name', 'country']
+                    attributes: ['artist_id', 'name', 'country'],
                 }
             });
             if (!album) return res.status(404).json({ error: 'Album not found'});
