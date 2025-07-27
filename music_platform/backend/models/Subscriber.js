@@ -32,7 +32,15 @@ const Subscriber = sequelize.define('Subscriber', {
         type: DataTypes.STRING,
         unique: true,
         allowNull: false
+    },
+
+    // 🎉 New field for plan type
+    planType: {
+        type: DataTypes.ENUM('free', 'premium'),
+        allowNull: false,
+        defaultValue: 'free'
     }
+
 }, {
     tableName: 'subscriber',
     timestamps: false
