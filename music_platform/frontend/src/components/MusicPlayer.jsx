@@ -1,10 +1,11 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, useMemo } from 'react';
 
 const MusicPlayer = ({ currentSong, isPlaying, onPlayPause, onNext, onPrevious, playlist = [], isMinimized, onToggleMinimize }) => {
   const audioRef = useRef(null);
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
   const [volume, setVolume] = useState(1);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     const audio = audioRef.current;
@@ -12,15 +13,35 @@ const MusicPlayer = ({ currentSong, isPlaying, onPlayPause, onNext, onPrevious, 
 
     const updateTime = () => setCurrentTime(audio.currentTime);
     const updateDuration = () => setDuration(audio.duration);
+    const handleLoadStart = () => {
+      setIsLoading(true);
+    };
+    const handleCanPlay = () => {
+      setIsLoading(false);
+    };
+    const handleWaiting = () => {
+      setIsLoading(true);
+    };
+    const handlePlaying = () => {
+      setIsLoading(false);
+    };
     
     audio.addEventListener('timeupdate', updateTime);
     audio.addEventListener('loadedmetadata', updateDuration);
     audio.addEventListener('ended', onNext);
+    audio.addEventListener('loadstart', handleLoadStart);
+    audio.addEventListener('canplay', handleCanPlay);
+    audio.addEventListener('waiting', handleWaiting);
+    audio.addEventListener('playing', handlePlaying);
 
     return () => {
       audio.removeEventListener('timeupdate', updateTime);
       audio.removeEventListener('loadedmetadata', updateDuration);
       audio.removeEventListener('ended', onNext);
+      audio.removeEventListener('loadstart', handleLoadStart);
+      audio.removeEventListener('canplay', handleCanPlay);
+      audio.removeEventListener('waiting', handleWaiting);
+      audio.removeEventListener('playing', handlePlaying);
     };
   }, [onNext]);
 
@@ -32,6 +53,7 @@ const MusicPlayer = ({ currentSong, isPlaying, onPlayPause, onNext, onPrevious, 
     // Reset time and duration when song changes
     setCurrentTime(0);
     setDuration(0);
+    setIsLoading(true);
     
     // Load the new audio source
     audio.load();
@@ -44,7 +66,7 @@ const MusicPlayer = ({ currentSong, isPlaying, onPlayPause, onNext, onPrevious, 
       };
       audio.addEventListener('loadeddata', playWhenLoaded);
     }
-  }, [currentSong?.song_id, isPlaying]); // Include isPlaying to satisfy ESLint
+  }, [currentSong?.song_id]); // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
     const audio = audioRef.current;
@@ -90,17 +112,23 @@ const MusicPlayer = ({ currentSong, isPlaying, onPlayPause, onNext, onPrevious, 
     return `${minutes}:${seconds.toString().padStart(2, '0')}`;
   };
 
-  if (!currentSong) {
-    return null;
-  }
-
   // For demo purposes, we'll use different test audio files based on song ID
   // In a real app, you'd have actual audio file URLs from your server
   const audioFiles = [
-    'https://www.w3schools.com/html/horse.mp3',
-    'https://files.catbox.moe/o3ot2w.mov'
+    // 'https://www.w3schools.com/html/horse.mp3',
+    'https://files.catbox.moe/o3ot2w.mov',
+    'https://files.catbox.moe/ctusuv.mp3'
   ];
-  const audioSrc = audioFiles[currentSong.song_id % audioFiles.length] || audioFiles[0];
+  const audioSrc = currentSong ? audioFiles[currentSong.song_id % audioFiles.length] || audioFiles[0] : '';
+  
+  // Use useMemo to prevent excessive re-renders - only pulse when actually loading
+  const shouldPulse = useMemo(() => {
+    return isLoading;
+  }, [isLoading]);
+
+  if (!currentSong) {
+    return null;
+  }
 
   if (isMinimized) {
     return (
@@ -108,7 +136,7 @@ const MusicPlayer = ({ currentSong, isPlaying, onPlayPause, onNext, onPrevious, 
         position: 'fixed',
         bottom: '20px',
         right: '20px',
-        background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+        background: '#222',
         color: 'white',
         padding: '10px 15px',
         borderRadius: '25px',
@@ -126,16 +154,17 @@ const MusicPlayer = ({ currentSong, isPlaying, onPlayPause, onNext, onPrevious, 
       <button
         onClick={(e) => {
           e.stopPropagation();
-          onPlayPause();
+          if (!shouldPulse) onPlayPause(); // Only allow click if not pulsing
         }}
+        disabled={shouldPulse} // Disable while pulsing
         style={{
-          background: 'rgba(255,255,255,0.3)',
+          background: shouldPulse ? 'rgba(255,255,255,0.1)' : 'rgba(255,255,255,0.3)',
           border: 'none',
-          color: 'white',
+          color: shouldPulse ? 'rgba(255,255,255,0.5)' : 'white',
           borderRadius: '50%',
           width: '30px',
           height: '30px',
-          cursor: 'pointer',
+          cursor: shouldPulse ? 'not-allowed' : 'pointer',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
@@ -162,7 +191,7 @@ const MusicPlayer = ({ currentSong, isPlaying, onPlayPause, onNext, onPrevious, 
       bottom: 0,
       left: 0,
       right: 0,
-      background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+      background: '#181818',
       color: 'white',
       padding: '15px 20px',
       display: 'flex',
@@ -224,14 +253,15 @@ const MusicPlayer = ({ currentSong, isPlaying, onPlayPause, onNext, onPrevious, 
         
         <button
           onClick={onPlayPause}
+          disabled={shouldPulse} // Disable while pulsing
           style={{
-            background: 'rgba(255,255,255,0.3)',
+            background: shouldPulse ? 'rgba(255,255,255,0.1)' : 'rgba(255,255,255,0.3)',
             border: 'none',
-            color: 'white',
+            color: shouldPulse ? 'rgba(255,255,255,0.5)' : 'white',
             borderRadius: '50%',
             width: '50px',
             height: '50px',
-            cursor: 'pointer',
+            cursor: shouldPulse ? 'not-allowed' : 'pointer',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
@@ -277,13 +307,32 @@ const MusicPlayer = ({ currentSong, isPlaying, onPlayPause, onNext, onPrevious, 
         >
           <div
             style={{
-              width: `${duration ? (currentTime / duration) * 100 : 0}%`,
+              width: shouldPulse ? '100%' : `${duration ? (currentTime / duration) * 100 : 0}%`,
               height: '100%',
-              background: 'white',
+              background: shouldPulse ? '#B0B0B0' : 'white', // Light grey instead of green
               borderRadius: '3px',
-              transition: 'width 0.1s'
+              transition: shouldPulse ? 'none' : 'width 0.1s',
+              animation: shouldPulse ? 'subtlePulse 1.5s ease-in-out infinite' : 'none' // Slower animation
             }}
           />
+          <style>
+            {`
+              @keyframes subtlePulse {
+                0% { 
+                  background: #B0B0B0;
+                  opacity: 0.7;
+                }
+                50% { 
+                  background: #D0D0D0;
+                  opacity: 0.5;
+                }
+                100% { 
+                  background: #B0B0B0;
+                  opacity: 0.7;
+                }
+              }
+            `}
+          </style>
         </div>
         <span style={{ fontSize: '12px', minWidth: '40px' }}>{formatTime(duration)}</span>
       </div>
