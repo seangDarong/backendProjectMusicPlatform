@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 
-export default function Profile({ token }) {
+export default function Profile({ token, onLogout }) {
   const [profile, setProfile] = useState(null);
 
   useEffect(() => {
@@ -59,6 +59,29 @@ export default function Profile({ token }) {
           <div style={{ color: '#5a6c7d', fontSize: '0.95rem' }}>
             Discover new music, create playlists, and enjoy your favorite songs.
           </div>
+        </div>
+
+        {/* Logout Button */}
+        <div style={{ marginTop: '2rem', textAlign: 'center' }}>
+          <button 
+            onClick={onLogout}
+            style={{
+              background: '#e74c3c',
+              color: 'white',
+              border: 'none',
+              borderRadius: 6,
+              padding: '0.75rem 2rem',
+              fontSize: '1rem',
+              fontWeight: 'bold',
+              cursor: 'pointer',
+              transition: 'background-color 0.2s',
+              boxShadow: '0 2px 4px rgba(0,0,0,0.1)'
+            }}
+            onMouseEnter={(e) => e.target.style.backgroundColor = '#c0392b'}
+            onMouseLeave={(e) => e.target.style.backgroundColor = '#e74c3c'}
+          >
+            🚪 Logout
+          </button>
         </div>
       </div>
     </div>

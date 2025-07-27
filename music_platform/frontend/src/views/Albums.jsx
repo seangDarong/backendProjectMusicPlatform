@@ -18,6 +18,9 @@ export default function Albums({ token, onSelectAlbum }) {
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
               <div>
                 <div style={{ fontWeight: 'bold', fontSize: '1.2rem', color: '#2c3e50', marginBottom: '0.5rem' }}>{album.title}</div>
+                <div style={{ color: '#666', fontSize: '1rem', marginBottom: '0.25rem' }}>
+                  by {album.Artist?.name || 'Unknown Artist'}
+                </div>
                 <div style={{ color: '#7f8c8d', fontSize: '0.95rem' }}>{album.release_date}</div>
               </div>
               <button 

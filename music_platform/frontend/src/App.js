@@ -7,6 +7,7 @@ import AlbumSongs from './views/AlbumSongs';
 import PlaylistSongs from './views/PlaylistSongs';
 import Profile from './views/Profile';
 import CreatePlaylist from './views/CreatePlaylist';
+import MusicPlayer from './components/MusicPlayer';
 
 function ErrorBoundary({ children }) {
   const [error, setError] = useState(null);
@@ -31,6 +32,13 @@ function App() {
   const [showCreatePlaylist, setShowCreatePlaylist] = useState(false);
   const [playlistRefresh, setPlaylistRefresh] = useState(0);
 
+  // Music player state
+  const [currentSong, setCurrentSong] = useState(null);
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [currentPlaylist, setCurrentPlaylist] = useState([]);
+  const [currentSongIndex, setCurrentSongIndex] = useState(0);
+  const [isPlayerMinimized, setIsPlayerMinimized] = useState(false);
+
   const handleLogin = (tok, uid) => {
     setToken(tok);
     setUserId(uid);
@@ -46,6 +54,38 @@ function App() {
     localStorage.removeItem('token');
     localStorage.removeItem('userId');
     setView('login');
+    // Stop music on logout
+    setCurrentSong(null);
+    setIsPlaying(false);
+    setCurrentPlaylist([]);
+  };
+
+  // Music player functions
+  const handlePlaySong = (song, playlist = []) => {
+    setCurrentSong(song);
+    setCurrentPlaylist(playlist);
+    setCurrentSongIndex(playlist.findIndex(s => s.song_id === song.song_id) || 0);
+    setIsPlaying(true);
+  };
+
+  const handlePlayPause = () => {
+    setIsPlaying(!isPlaying);
+  };
+
+  const handleNext = () => {
+    if (currentPlaylist.length === 0) return;
+    const nextIndex = (currentSongIndex + 1) % currentPlaylist.length;
+    setCurrentSongIndex(nextIndex);
+    setCurrentSong(currentPlaylist[nextIndex]);
+    setIsPlaying(true);
+  };
+
+  const handlePrevious = () => {
+    if (currentPlaylist.length === 0) return;
+    const prevIndex = currentSongIndex === 0 ? currentPlaylist.length - 1 : currentSongIndex - 1;
+    setCurrentSongIndex(prevIndex);
+    setCurrentSong(currentPlaylist[prevIndex]);
+    setIsPlaying(true);
   };
 
   // Update document title based on current view
@@ -67,6 +107,9 @@ function App() {
     } else {
       document.title = titles[view] || 'Music Platform';
     }
+
+    // Reset scroll position when view changes
+    window.scrollTo(0, 0);
   }, [view, selectedAlbum, selectedPlaylist, showCreatePlaylist]);
 
   if (view === 'login') {
@@ -189,32 +232,6 @@ function App() {
                 Profile
               </button>
             </div>
-
-            {/* Logout Button at Bottom */}
-            <div style={{ borderTop: '1px solid #34495e', paddingTop: '1rem', paddingBottom: '1rem' }}>
-              <button 
-                onClick={handleLogout}
-                style={{ 
-                  width: '100%',
-                  padding: '1rem 1.5rem', 
-                  border: 'none', 
-                  backgroundColor: '#e74c3c',
-                  color: '#fff',
-                  textAlign: 'left',
-                  fontSize: '1rem',
-                  cursor: 'pointer',
-                  transition: 'background-color 0.2s'
-                }}
-                onMouseEnter={(e) => {
-                  e.target.style.backgroundColor = '#c0392b';
-                }}
-                onMouseLeave={(e) => {
-                  e.target.style.backgroundColor = '#e74c3c';
-                }}
-              >
-                Logout
-              </button>
-            </div>
           </nav>
 
           {/* Main Content Area - Offset by Sidebar Width */}
@@ -223,11 +240,12 @@ function App() {
             flex: 1, 
             backgroundColor: '#fff',
             minHeight: '100vh',
+            paddingBottom: isPlayerMinimized ? '20px' : '120px', // Adjust padding based on player state
             overflow: 'auto'
           }}>
             {view === 'albums' && !selectedAlbum && <Albums token={token} onSelectAlbum={setSelectedAlbum} />}
-            {view === 'albums' && selectedAlbum && <AlbumSongs albumId={selectedAlbum} token={token} userId={userId} onBack={() => setSelectedAlbum(null)} />}
-            {view === 'profile' && <Profile token={token} />}
+            {view === 'albums' && selectedAlbum && <AlbumSongs albumId={selectedAlbum} token={token} userId={userId} onBack={() => setSelectedAlbum(null)} onPlaySong={handlePlaySong} />}
+            {view === 'profile' && <Profile token={token} onLogout={handleLogout} />}
             {view === 'playlists' && !showCreatePlaylist && !selectedPlaylist && (
               <div>
                 <div style={{ padding: '2rem 2rem 0 2rem', backgroundColor: '#fff' }}>
@@ -254,9 +272,21 @@ function App() {
                 <UserPlaylists token={token} userId={userId} refresh={playlistRefresh} onSelectPlaylist={setSelectedPlaylist} />
               </div>
             )}
-            {view === 'playlists' && selectedPlaylist && <PlaylistSongs playlistId={selectedPlaylist} token={token} onClose={() => setSelectedPlaylist(null)} />}
+            {view === 'playlists' && selectedPlaylist && <PlaylistSongs playlistId={selectedPlaylist} token={token} onClose={() => setSelectedPlaylist(null)} onPlaySong={handlePlaySong} />}
             {view === 'playlists' && showCreatePlaylist && <CreatePlaylist token={token} userId={userId} onCreated={() => { setShowCreatePlaylist(false); setView('playlists'); setPlaylistRefresh(r => r + 1); }} />}
           </main>
+
+          {/* Music Player */}
+          <MusicPlayer 
+            currentSong={currentSong}
+            isPlaying={isPlaying}
+            onPlayPause={handlePlayPause}
+            onNext={handleNext}
+            onPrevious={handlePrevious}
+            playlist={currentPlaylist}
+            isMinimized={isPlayerMinimized}
+            onToggleMinimize={() => setIsPlayerMinimized(!isPlayerMinimized)}
+          />
         </div>
       </ErrorBoundary>
     );

@@ -1,4 +1,4 @@
-const { Song } = require('../models');
+const { Song, Artist } = require('../models');
 
 const SongController = {
   async create(req, res) {
@@ -12,7 +12,12 @@ const SongController = {
 
   async getAll(req, res) {
     try {
-      const songs = await Song.findAll();
+      const songs = await Song.findAll({
+        include: {
+          model: Artist,
+          attributes: ['artist_id', 'name', 'country']
+        }
+      });
       res.json(songs);
     } catch (error) {
       res.status(500).json({ error: error.message });
@@ -21,7 +26,12 @@ const SongController = {
 
   async getById(req, res) {
     try {
-      const song = await Song.findByPk(req.params.id);
+      const song = await Song.findByPk(req.params.id, {
+        include: {
+          model: Artist,
+          attributes: ['artist_id', 'name', 'country']
+        }
+      });
       if (!song) return res.status(404).json({ error: 'Song not found' });
       res.json(song);
     } catch (error) {

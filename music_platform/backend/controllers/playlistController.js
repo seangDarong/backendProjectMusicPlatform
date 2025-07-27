@@ -58,9 +58,16 @@ exports.listSongsInPlaylist = async (req, res) => {
   try {
     const { playlistId } = req.params;
     const Song = require('../models/Song');
+    const Artist = require('../models/Artist');
     const playlistSongs = await PlaylistSong.findAll({ where: { playlist_id: playlistId } });
     const songIds = playlistSongs.map(ps => ps.song_id);
-    const songs = await Song.findAll({ where: { song_id: songIds } });
+    const songs = await Song.findAll({ 
+      where: { song_id: songIds },
+      include: {
+        model: Artist,
+        attributes: ['artist_id', 'name', 'country']
+      }
+    });
     res.json(songs);
   } catch (err) {
     console.error('Error fetching songs in playlist:', err);
@@ -86,13 +93,7 @@ exports.removeSongFromPlaylist = async (req, res) => {
 exports.deletePlaylist = async (req, res) => {
   try {
     const { playlistId } = req.params;
-    
-    // First, remove all songs from the playlist
-    await PlaylistSong.destroy({ where: { playlist_id: playlistId } });
-    
-    // Then, delete the playlist itself
     const deleted = await Playlist.destroy({ where: { playlist_id: playlistId } });
-    
     if (deleted) {
       res.json({ message: 'Playlist deleted!' });
     } else {

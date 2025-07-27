@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { getAlbumSongs } from '../apis/albumApi';
 import { getUserPlaylists, addSongToPlaylist } from '../apis/playlistApi';
 
-export default function AlbumSongs({ albumId, token, userId, onBack }) {
+export default function AlbumSongs({ albumId, token, userId, onBack, onPlaySong }) {
   const [songs, setSongs] = useState([]);
   const [album, setAlbum] = useState(null);
   const [playlists, setPlaylists] = useState([]);
@@ -104,23 +104,44 @@ export default function AlbumSongs({ albumId, token, userId, onBack }) {
                 <div style={{ fontWeight: 'bold', fontSize: '1.1rem', marginBottom: '0.2rem' }}>
                   {song.title}
                 </div>
+                <div style={{ color: '#666', fontSize: '0.9rem', marginBottom: '0.2rem' }}>
+                  by {song.Artist?.name || 'Unknown Artist'}
+                </div>
                 <div style={{ color: '#666', fontSize: '0.9rem' }}>
                   Duration: {formatDuration(song.duration_in_sec)}
                 </div>
               </div>
-              <button 
-                onClick={() => setSelectedSong(song.song_id)} 
-                style={{ 
-                  background: '#1976d2', 
-                  color: '#fff', 
-                  border: 'none', 
-                  borderRadius: 4, 
-                  padding: '0.5rem 1rem',
-                  cursor: 'pointer'
-                }}
-              >
-                Add to Playlist
-              </button>
+              <div style={{ display: 'flex', gap: '0.5rem' }}>
+                <button 
+                  onClick={() => onPlaySong && onPlaySong(song, songs)} 
+                  style={{ 
+                    background: '#27ae60', 
+                    color: '#fff', 
+                    border: 'none', 
+                    borderRadius: 4, 
+                    padding: '0.5rem 1rem',
+                    cursor: 'pointer',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '0.25rem'
+                  }}
+                >
+                  ▶ Play
+                </button>
+                <button 
+                  onClick={() => setSelectedSong(song.song_id)} 
+                  style={{ 
+                    background: '#1976d2', 
+                    color: '#fff', 
+                    border: 'none', 
+                    borderRadius: 4, 
+                    padding: '0.5rem 1rem',
+                    cursor: 'pointer'
+                  }}
+                >
+                  Add to Playlist
+                </button>
+              </div>
             </div>
           </li>
         ))}

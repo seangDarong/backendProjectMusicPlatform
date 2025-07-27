@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const AlbumController = require('../controllers/album');
 const Song = require('../models/Song');
+const Artist = require('../models/Artist');
 
 // GET /api/albums — Get all albums
 router.get('/', AlbumController.getAll);
@@ -13,7 +14,13 @@ router.post('/', AlbumController.create);
 router.get('/:albumId/songs', async (req, res) => {
   try {
     const { albumId } = req.params;
-    const songs = await Song.findAll({ where: { album_id: albumId } });
+    const songs = await Song.findAll({ 
+      where: { album_id: albumId },
+      include: {
+        model: Artist,
+        attributes: ['artist_id', 'name', 'country']
+      }
+    });
     res.json(songs);
   } catch (err) {
     console.error('Error fetching songs for album:', err);

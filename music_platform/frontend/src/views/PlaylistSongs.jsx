@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { getPlaylistSongs, removeSongFromPlaylist, deletePlaylist, editPlaylist } from '../apis/playlistApi';
 
-export default function PlaylistSongs({ playlistId, token, onClose }) {
+export default function PlaylistSongs({ playlistId, token, onClose, onPlaySong }) {
   const [songs, setSongs] = useState([]);
   const [playlist, setPlaylist] = useState(null);
   const [status, setStatus] = useState('');
@@ -242,23 +242,44 @@ export default function PlaylistSongs({ playlistId, token, onClose }) {
                   <div style={{ fontWeight: 'bold', fontSize: '1.1rem', marginBottom: '0.2rem' }}>
                     {song.title}
                   </div>
+                  <div style={{ color: '#666', fontSize: '0.9rem', marginBottom: '0.2rem' }}>
+                    by {song.Artist?.name || 'Unknown Artist'}
+                  </div>
                   <div style={{ color: '#666', fontSize: '0.9rem' }}>
                     Duration: {formatDuration(song.duration_in_sec)}
                   </div>
                 </div>
-                <button 
-                  onClick={() => handleRemove(song.song_id)} 
-                  style={{ 
-                    background: '#d32f2f', 
-                    color: '#fff', 
-                    border: 'none', 
-                    borderRadius: 4, 
-                    padding: '0.5rem 1rem',
-                    cursor: 'pointer'
-                  }}
-                >
-                  Remove
-                </button>
+                <div style={{ display: 'flex', gap: '0.5rem' }}>
+                  <button 
+                    onClick={() => onPlaySong && onPlaySong(song, songs)} 
+                    style={{ 
+                      background: '#27ae60', 
+                      color: '#fff', 
+                      border: 'none', 
+                      borderRadius: 4, 
+                      padding: '0.5rem 1rem',
+                      cursor: 'pointer',
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '0.25rem'
+                    }}
+                  >
+                    ▶ Play
+                  </button>
+                  <button 
+                    onClick={() => handleRemove(song.song_id)} 
+                    style={{ 
+                      background: '#d32f2f', 
+                      color: '#fff', 
+                      border: 'none', 
+                      borderRadius: 4, 
+                      padding: '0.5rem 1rem',
+                      cursor: 'pointer'
+                    }}
+                  >
+                    Remove
+                  </button>
+                </div>
               </div>
             </li>
           ))}
