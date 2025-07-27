@@ -1,8 +1,6 @@
-
 const Album = require('../models/Album');
 const Artist = require('../models/Artist');
 const Song = require('../models/Song');
-
 const AlbumController = {
     async create(req, res) {
         try {
