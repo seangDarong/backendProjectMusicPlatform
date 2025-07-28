@@ -257,3 +257,10 @@ table {
 .sidebar li:hover {
     background-color: #33334d;
 }
+
+
+.clickable-name:hover {
+    color: #5283ed;
+    cursor: pointer;
+    text-decoration: underline;
+}

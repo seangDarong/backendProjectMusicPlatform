@@ -1,22 +1,22 @@
 import Sidebar from '../components/Sidebar';
-import SongTable from '../components/SongTable';
+import ArtistTable from '../components/ArtistTable';
 import '../styles/global.css';
 
-const ManageSong = () => {
+const ManageArtist = () => {
 
     return (
         <div style={{ display: 'flex' }}>
             <Sidebar />
             <div style={{ marginLeft: '240px', padding: '20px', width: '100%' }}>
-                <h1>Manage Song</h1>
+                <h1>Manage Artist</h1>
                 <hr />
                 <div className="create-buttons">
-                    <button className="create-button" onClick={() => navigate('/users/new')}>Create song</button>
+                    <button className="create-button" onClick={() => navigate('/users/new')}>Create artist</button>
                 </div>
-                <SongTable />
+                <ArtistTable />
             </div>
         </div>
     );
 }
 
-export default ManageSong;
+export default ManageArtist;

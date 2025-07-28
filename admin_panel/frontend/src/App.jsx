@@ -1,30 +1,36 @@
 import { Routes, Route } from 'react-router-dom';
-import Dashboard from './pages/Dashboard';
-import Report from './pages/Report';
-import ManageSong from './pages/ManageSong';
 import ManageSubscription from './pages/ManageSubscription';
 import ManageSubscriber from './pages/ManageSubscriber';
-import ManageArtist from './pages/ManageArtist';
+import ArtistDashboard from './pages/ArtistDashboard';
+import ArtistDetail from './pages/ArtistDetail';
+import AlbumDetail from './pages/AlbumDetail';
 import RoleDashboard from './pages/RoleDashboard';
 import CreateRole from './pages/CreateRole';
 import CreateUser from './pages/CreateUser';
+import CreateSong from './pages/CreateSong';
+import CreateAlbum from './pages/CreateAlbum';
 import EditRole from './pages/EditRole';
 import EditUser from './pages/EditUser';
+import EditSong from './pages/EditSong';
+import EditAlbum from './pages/EditAlbum';
 
 const App = () => {
     return (
         <Routes>
-            <Route path="/" element={<Dashboard />} />
-            <Route path="/report" element={<Report />}/>
-            <Route path="/manage/songs" element={<ManageSong />}/>
+            <Route path="/" element={<ArtistDashboard />}/>
+            <Route path="/artists/:id" element={<ArtistDetail />} />
+            <Route path="/albums/:id" element={<AlbumDetail />}/>
             <Route path="/manage/subscriptions" element={<ManageSubscription />}/>
             <Route path="/manage/subscribers" element={<ManageSubscriber />}/>
-            <Route path="/manage/artists" element={<ManageArtist />}/>
             <Route path="/roles/dashboard" element={<RoleDashboard />} />
             <Route path="/roles/new" element={<CreateRole />} />
             <Route path="/users/new" element={<CreateUser />} />
+            <Route path="/songs/new" element={< CreateSong/>}/>
+            <Route path="/albums/new" element={< CreateAlbum/>}/>
             <Route path="/roles/edit/:id" element={<EditRole />} />
             <Route path="/users/edit/:id" element={<EditUser />} />
+            <Route path="/songs/edit/:id" element={< EditSong/>}/>
+            <Route path="/albums/edit/:id" element={< EditAlbum/>}/>
         </Routes>
     );
 };

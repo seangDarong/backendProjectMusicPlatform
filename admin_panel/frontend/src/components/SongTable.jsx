@@ -3,7 +3,7 @@ import { fetchSongs, deleteSong } from '../services/api';
 import { useNavigate } from "react-router-dom";
 import '../styles/global.css'; 
 
-const SongTable = () => {
+const SongTable = ({ albumId }) => {  
     const [songs, setSongs] = useState([]);
     const [showModal, setShowModal] = useState(false);
     const [selectedSongId, setSelectedSongId] = useState(null);
@@ -11,20 +11,27 @@ const SongTable = () => {
 
     useEffect(() => {
         fetchSongs()
-            .then(data => setSongs(data))
+            .then(data => {
+                const filtered = data.filter(song => String(song.album_id) === String(albumId));
+                setSongs(filtered);
+            })
             .catch(err => console.error('Error fetching songs', err));
-    }, []);
+    }, [albumId]);
 
     const confirmDelete = (id) => {
         setSelectedSongId(id);
         setShowModal(true);
     };
 
-    const handleDelete = ()=> {
+    const handleDelete = () => {
         deleteSong(selectedSongId)
             .then(() => {
-                alert('Song deleted sucessfullly!');
-                fetchSongs().then(setSongs);
+                alert('Song deleted successfully!');
+                fetchSongs()
+                    .then(data => {
+                        const filtered = data.filter(song => String(song.album_id) === String(albumId));
+                        setSongs(filtered);
+                    });
                 setShowModal(false);
                 setSelectedSongId(null);
             })
@@ -41,38 +48,26 @@ const SongTable = () => {
                     <tr>
                         <th>ID</th>
                         <th>Title</th>
-                        <th>Artist</th>
-                        <th>Album</th>
                         <th>Duration</th>
                         <th>Actions</th>
                     </tr>
                 </thead>
                 <tbody>
-                        {songs.length === 0 ? (
-                            <tr><td colSpan="6">No songs found.</td></tr>
-                        ) : (
-                            songs.map(song => (
-                                <tr key={song.song_id}>
-                                    <td>{song.song_id}</td>
-                                    <td>{song.title}</td>
-                                    <td>
-                                        {song.Artist
-                                            ? `${song.Artist.name} (${song.Artist.country})`
-                                            : 'N/A'}
-                                    </td>
-                                    <td>
-                                        {song.Album
-                                            ? `${song.Album.title} (${song.Album.release_date})`
-                                            : 'N/A'}
-                                    </td>
-                                    <td>{song.duration_in_sec} sec</td>
-                                    <td>
-                                        <button className="edit-button" onClick={() => navigate(`/songs/edit/${song.song_id}`)}>Edit</button>
-                                        <button className="delete-button" onClick={() => confirmDelete(song.song_id)}>Delete</button>
-                                    </td>
-                                </tr>
-                            ))
-                        )}
+                    {songs.length === 0 ? (
+                        <tr><td colSpan="4">No songs found for this album.</td></tr>
+                    ) : (
+                        songs.map(song => (
+                            <tr key={song.song_id}>
+                                <td>{song.song_id}</td>
+                                <td>{song.title}</td>
+                                <td>{song.duration_in_sec} sec</td>
+                                <td>
+                                    <button className="edit-button" onClick={() => navigate(`/songs/edit/${song.song_id}`)}>Edit</button>
+                                    <button className="delete-button" onClick={() => confirmDelete(song.song_id)}>Delete</button>
+                                </td>
+                            </tr>
+                        ))
+                    )}
                 </tbody>
             </table>
 
