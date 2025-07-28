@@ -10,6 +10,7 @@ const albumRouter = require("./routes/album.js");
 const playHistoryRouter = require("./routes/playhistory.js");
 const songRouter = require("./routes/song.js");
 const artistRouter = require("./routes/artist.js");
+const subscriberRouter = require("./routes/subscriber.js");
 
 const app = express();
 
@@ -24,7 +25,7 @@ app.use('/api/albums', albumRouter);
 app.use('/api/playhistory', playHistoryRouter);
 app.use('/api/songs', songRouter);
 app.use('/api/artists', artistRouter);
-
+app.use('/api/subscribers', subscriberRouter);
 const port = process.env.PORT || 3000;
 
 sequelize.sync({ alter: true }).then(() => {

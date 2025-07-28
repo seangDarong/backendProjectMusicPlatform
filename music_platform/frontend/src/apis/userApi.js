@@ -17,3 +17,22 @@ export async function loginUser(email, password) {
   });
   return res.json();
 }
+
+export async function resetPasswordUser(data) {
+  const res = await fetch(`${API_BASE}/reset-password`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(data)
+  });
+  return res.json();
+}
+export async function deactivateUser(token) {
+  const res = await fetch(`${API_BASE}/deactivate`, {
+    method: 'DELETE',
+    headers: { 
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`
+    }
+  });
+  return res.json();
+}
