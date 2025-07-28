@@ -1,11 +1,11 @@
 const express = require('express');
 const router = express.Router();
-const songController = require('../../../music_platform/backend/controllers/song');
+const songController = require('../controllers/songController');
 
-router.get('/', songController.getAll);
-router.get('/:id', songController.getById);
-router.post('/', songController.create);
-router.post('/:id', songController.update);
-router.delete('/:id', songController.delete);
+router.get('/', songController.getAllSong);
+router.get('/:id', songController.getSongById);
+router.post('/', songController.createSong);
+router.put('/', songController.updateSong);
+router.delete('/', songController.deleteSong);
 
 module.exports = router;

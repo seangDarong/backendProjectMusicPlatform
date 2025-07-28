@@ -1,4 +1,4 @@
-const { sequelize, User, Role } = require('../modles');
+const { sequelize, User, Role } = require('../models');
 
 const getAllUser = async (req, res) => {
     try {
@@ -47,7 +47,7 @@ const getUserById = async (req, res) => {
         return res.json(user);
     } catch (err) {
         console.error('Error fetching user by ID.', err);
-        res.status(500).json({ error: 'Internal server error' });
+        res.status(500).json({ error: 'Failed to fetch user by ID.' });
     }
 };
 
