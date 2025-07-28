@@ -1,6 +1,6 @@
 const express = require('express');
 const cors = require('cors');
-const { sequelize } = require('./modles');
+const { sequelize } = require('./models');
 const roleRoutes = require('./routes/roleRoutes');
 const userRoutes = require('./routes/userRoutes');
 const songRoutes = require('./routes/songRoutes');

@@ -1,4 +1,4 @@
-const { sequelize, Role } = require('../modles');
+const { sequelize, Role } = require('../models');
 
 const getAllRolesWithPrivileges = async (req, res) => {
     try {

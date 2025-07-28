@@ -1,8 +1,8 @@
-
 import React, { useEffect, useState } from 'react';
 
 export default function Profile({ token, onLogout }) {
   const [profile, setProfile] = useState(null);
+  const [isDeleting, setIsDeleting] = useState(false);
 
   useEffect(() => {
     document.title = 'Profile - Music Platform';
@@ -19,6 +19,34 @@ export default function Profile({ token, onLogout }) {
 
   const handleGoPremium = () => {
     alert('Redirecting to payment flow or upgrade API call here');
+  };
+
+  const handleDeactivate = async () => {
+    const confirmed = window.confirm(
+      'Are you sure you want to deactivate your account? This action is permanent and cannot be undone.'
+    );
+    if (!confirmed) return;
+
+    setIsDeleting(true);
+
+    try {
+      const res = await fetch('http://localhost:3000/api/users/deactivate', {
+        method: 'DELETE',
+        headers: { Authorization: `Bearer ${token}` },
+      });
+
+      if (res.ok) {
+        alert('Your account has been deactivated and deleted permanently.');
+        onLogout(); // log the user out after deletion
+      } else {
+        const data = await res.json();
+        alert('Failed to deactivate account: ' + (data.message || 'Unknown error'));
+      }
+    } catch (error) {
+      alert('Error deactivating account: ' + error.message);
+    } finally {
+      setIsDeleting(false);
+    }
   };
 
   if (!profile) {
@@ -65,6 +93,7 @@ export default function Profile({ token, onLogout }) {
           borderRadius: 8,
           padding: '2rem',
           boxShadow: '0 2px 10px rgba(0,0,0,0.1)',
+          marginBottom: '1rem',
         }}
       >
         <div style={{ display: 'grid', gap: '1.5rem' }}>
@@ -238,6 +267,69 @@ export default function Profile({ token, onLogout }) {
           </div>
         </div>
 
+        {/* Warning message */}
+        <div
+          style={{
+            maxWidth: '600px',
+            margin: '2rem auto 1rem',
+            padding: '1rem',
+            backgroundColor: '#f8d7da',
+            color: '#721c24',
+            border: '1px solid #f5c6cb',
+            borderRadius: 6,
+            fontWeight: 'bold',
+            textAlign: 'center',
+          }}
+        >
+          ⚠️ Warning: Deactivating your account will permanently delete all your data and cannot be undone.
+        </div>
+
+        {/* Logout and Deactivate buttons */}
+        <div style={{ marginTop: '1rem', textAlign: 'center' }}>
+          <button 
+            onClick={onLogout}
+            style={{
+              background: '#e74c3c',
+              color: 'white',
+              border: 'none',
+              borderRadius: 6,
+              padding: '0.75rem 2rem',
+              fontSize: '1rem',
+              fontWeight: 'bold',
+              cursor: 'pointer',
+              transition: 'background-color 0.2s',
+              boxShadow: '0 2px 4px rgba(0,0,0,0.1)',
+              marginBottom: '1rem'
+            }}
+            onMouseEnter={(e) => e.target.style.backgroundColor = '#c0392b'}
+            onMouseLeave={(e) => e.target.style.backgroundColor = '#e74c3c'}
+            disabled={isDeleting}
+          >
+            🚪 Logout
+          </button>
+
+          <button
+            onClick={handleDeactivate}
+            style={{
+              background: '#a93226',
+              color: 'white',
+              border: 'none',
+              borderRadius: 6,
+              padding: '0.75rem 2rem',
+              fontSize: '1rem',
+              fontWeight: 'bold',
+              cursor: 'pointer',
+              transition: 'background-color 0.2s',
+              boxShadow: '0 2px 4px rgba(0,0,0,0.1)',
+            }}
+            onMouseEnter={(e) => e.target.style.backgroundColor = '#922b21'}
+            onMouseLeave={(e) => e.target.style.backgroundColor = '#a93226'}
+            disabled={isDeleting}
+          >
+            {isDeleting ? 'Deleting...' : '🗑️ Deactivate Account'}
+          </button>
+        </div>
+
         <div
           style={{
             marginTop: '2rem',
@@ -260,29 +352,6 @@ export default function Profile({ token, onLogout }) {
           <div style={{ color: '#5a6c7d', fontSize: '0.95rem' }}>
             Discover new music, create playlists, and enjoy your favorite songs.
           </div>
-        </div>
-
-        {/* Logout Button */}
-        <div style={{ marginTop: '2rem', textAlign: 'center' }}>
-          <button 
-            onClick={onLogout}
-            style={{
-              background: '#e74c3c',
-              color: 'white',
-              border: 'none',
-              borderRadius: 6,
-              padding: '0.75rem 2rem',
-              fontSize: '1rem',
-              fontWeight: 'bold',
-              cursor: 'pointer',
-              transition: 'background-color 0.2s',
-              boxShadow: '0 2px 4px rgba(0,0,0,0.1)'
-            }}
-            onMouseEnter={(e) => e.target.style.backgroundColor = '#c0392b'}
-            onMouseLeave={(e) => e.target.style.backgroundColor = '#e74c3c'}
-          >
-            🚪 Logout
-          </button>
         </div>
       </div>
     </div>
