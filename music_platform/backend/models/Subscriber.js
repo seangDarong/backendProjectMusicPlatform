@@ -39,8 +39,15 @@ const Subscriber = sequelize.define('Subscriber', {
         type: DataTypes.ENUM('free', 'premium'),
         allowNull: false,
         defaultValue: 'free'
-    }
-
+    },
+    subscriptionStart: {
+        type: DataTypes.DATE,
+        allowNull: true
+    },
+    subscriptionEnd: {
+        type: DataTypes.DATE,
+        allowNull: true
+    },
 }, {
     tableName: 'subscriber',
     timestamps: false
