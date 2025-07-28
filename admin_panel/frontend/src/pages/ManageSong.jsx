@@ -1,4 +1,5 @@
 import Sidebar from '../components/Sidebar';
+import SongTable from '../components/SongTable';
 import '../styles/global.css';
 
 const ManageSong = () => {
@@ -12,7 +13,7 @@ const ManageSong = () => {
                 <div className="create-buttons">
                     <button className="create-button" onClick={() => navigate('/users/new')}>Create song</button>
                 </div>
-                
+                <SongTable />
             </div>
         </div>
     );

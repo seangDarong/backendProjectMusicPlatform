@@ -48,13 +48,28 @@ const SongTable = () => {
                     </tr>
                 </thead>
                 <tbody>
-                        {songs.length == 0 ? (
+                        {songs.length === 0 ? (
                             <tr><td colSpan="6">No songs found.</td></tr>
-                        ) : (songs.map(song => (
-                                <tr key={song.id}>
-                                    <td>{song.id}</td>
+                        ) : (
+                            songs.map(song => (
+                                <tr key={song.song_id}>
+                                    <td>{song.song_id}</td>
                                     <td>{song.title}</td>
-                                    <td></td>
+                                    <td>
+                                        {song.Artist
+                                            ? `${song.Artist.name} (${song.Artist.country})`
+                                            : 'N/A'}
+                                    </td>
+                                    <td>
+                                        {song.Album
+                                            ? `${song.Album.title} (${song.Album.release_date})`
+                                            : 'N/A'}
+                                    </td>
+                                    <td>{song.duration_in_sec} sec</td>
+                                    <td>
+                                        <button className="edit-button" onClick={() => navigate(`/songs/edit/${song.song_id}`)}>Edit</button>
+                                        <button className="delete-button" onClick={() => confirmDelete(song.song_id)}>Delete</button>
+                                    </td>
                                 </tr>
                             ))
                         )}
@@ -63,7 +78,7 @@ const SongTable = () => {
 
             {showModal && (
                 <div className="modal-overlay">
-                    <div className="model-content">
+                    <div className="modal-content">
                         <h3>Confirm Delete</h3>
                         <p>Are you sure you want to delete this song?</p>
                         <div className="modal-buttons">

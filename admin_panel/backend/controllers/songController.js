@@ -1,4 +1,4 @@
-const { sequelize, Song } = require('../models');
+const { sequelize, Song, Artist, Album } = require('../models');
 
 const getAllSong = async (req, res) => {
     try {

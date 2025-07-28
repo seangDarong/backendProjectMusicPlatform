@@ -4,7 +4,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 
 const allPrivileges = ['SELECT', 'INSERT', 'UPDATE', 'DELETE', 'ALTER'];
 
-const RoleForm = () => {
+const RoleForm = () => { 
     const { id } = useParams();
     const navigate = useNavigate();
     const [roleName, setRoleName] = useState('');

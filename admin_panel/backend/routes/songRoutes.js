@@ -5,7 +5,7 @@ const songController = require('../controllers/songController');
 router.get('/', songController.getAllSong);
 router.get('/:id', songController.getSongById);
 router.post('/', songController.createSong);
-router.put('/', songController.updateSong);
-router.delete('/', songController.deleteSong);
+router.put('/:id', songController.updateSong);
+router.delete('/:id', songController.deleteSong);
 
 module.exports = router;
