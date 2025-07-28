@@ -60,7 +60,7 @@ export const deleteUser = async (id) => {
     return res.data;
 };
 
-export const fetchSong = async () => {
+export const fetchSongs = async () => {
     const res = await api.get('/songs');
     return res.data;
 };

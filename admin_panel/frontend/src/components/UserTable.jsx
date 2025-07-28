@@ -11,7 +11,7 @@ const UserTable = () => {
 
     useEffect(() => {
         fetchUsers()
-            .then(data => setUsers(data))
+            .then(data => setUsers(data)) 
             .catch(err => console.error('Error fetching users', err));
     }, []);
 

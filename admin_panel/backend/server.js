@@ -4,6 +4,7 @@ const { sequelize } = require('./modles');
 const roleRoutes = require('./routes/roleRoutes');
 const userRoutes = require('./routes/userRoutes');
 const songRoutes = require('./routes/songRoutes');
+const artistRoutes = require('./routes/artistRoute');
 
 const app = express();
 app.use(express.json());
@@ -19,6 +20,7 @@ app.get('/', (req, res) => {
 app.use('/roles', roleRoutes);
 app.use('/users', userRoutes);
 app.use('/songs', songRoutes);
+app.use('/artists', artistRoutes);
 
 sequelize.sync({ alter: true }).then(() => {
     console.log('Database synced sucessfully.');
