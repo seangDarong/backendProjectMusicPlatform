@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from 'react';
+import PlanSelection from './PlanSelection';
 
 export default function Profile({ token, onLogout }) {
   const [profile, setProfile] = useState(null);
   const [isDeleting, setIsDeleting] = useState(false);
+  const [showPlanSelection, setShowPlanSelection] = useState(false);
 
   useEffect(() => {
     document.title = 'Profile - Music Platform';
@@ -18,7 +20,16 @@ export default function Profile({ token, onLogout }) {
   }, [token]);
 
   const handleGoPremium = () => {
-    alert('Redirecting to payment flow or upgrade API call here');
+    console.log('Profile object before plan selection:', profile);
+    setShowPlanSelection(true);
+  };
+
+  const handlePlanChange = (updatedProfile) => {
+    setProfile(updatedProfile);
+  };
+
+  const handleBackFromPlanSelection = () => {
+    setShowPlanSelection(false);
   };
 
   const handleDeactivate = async () => {
@@ -64,6 +75,18 @@ export default function Profile({ token, onLogout }) {
       >
         <div style={{ color: '#7f8c8d', fontSize: '1.2rem' }}>Loading profile...</div>
       </div>
+    );
+  }
+
+  // Show plan selection if requested
+  if (showPlanSelection) {
+    return (
+      <PlanSelection
+        profile={profile}
+        token={token}
+        onPlanChange={handlePlanChange}
+        onBack={handleBackFromPlanSelection}
+      />
     );
   }
 
@@ -219,7 +242,7 @@ export default function Profile({ token, onLogout }) {
             <div style={{ color: '#34495e', fontSize: '1rem' }}>{profile.country}</div>
           </div>
 
-          {/* Plan Type and Go Premium Button */}
+          {/* Plan Type and Manage Plan Button */}
           <div
             style={{
               display: 'flex',
@@ -243,27 +266,30 @@ export default function Profile({ token, onLogout }) {
             </div>
             <div style={{ color: '#34495e', fontSize: '1rem' }}>
               {profile.planType === 'premium' ? 'Premium' : 'Free'}
+              {profile.planType === 'premium' && profile.subscriptionEnd && (
+                <div style={{ fontSize: '0.8rem', color: '#7f8c8d' }}>
+                  Expires: {new Date(profile.subscriptionEnd).toLocaleDateString()}
+                </div>
+              )}
             </div>
 
-            {profile.planType?.toLowerCase() === 'free' && (
-              <button
-                onClick={handleGoPremium}
-                style={{
-                  marginLeft: 'auto',
-                  backgroundColor: '#3498db',
-                  color: 'white',
-                  padding: '0.5rem 1rem',
-                  border: 'none',
-                  borderRadius: '8px',
-                  fontSize: '0.9rem',
-                  cursor: 'pointer',
-                  boxShadow: '0 4px 6px rgba(0,0,0,0.1)',
-                  transition: 'background-color 0.3s ease',
-                }}
-              >
-                Go Premium
-              </button>
-            )}
+            <button
+              onClick={handleGoPremium}
+              style={{
+                marginLeft: 'auto',
+                backgroundColor: profile.planType === 'premium' ? '#27ae60' : '#3498db',
+                color: 'white',
+                padding: '0.5rem 1rem',
+                border: 'none',
+                borderRadius: '8px',
+                fontSize: '0.9rem',
+                cursor: 'pointer',
+                boxShadow: '0 4px 6px rgba(0,0,0,0.1)',
+                transition: 'background-color 0.3s ease',
+              }}
+            >
+              {profile.planType === 'premium' ? 'Manage Plan' : 'Go Premium'}
+            </button>
           </div>
         </div>
 

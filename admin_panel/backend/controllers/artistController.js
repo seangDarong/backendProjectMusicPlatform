@@ -17,14 +17,16 @@ const getAllArtist = async (req, res) => {
 const getArtistById = async (req, res) => {
     try {
         const artist = await Artist.findByPk(req.params.id, {
-            include: {
-                model: Album,
-                attributes: ['album_id', 'title', 'release_date'],
-                include: {
+            include: [
+                {
+                    model: Album,
+                    attributes: ['album_id', 'title', 'release_date', 'cover_image_url']
+                },
+                {
                     model: Song,
-                    attributes: ['song_id', 'tile']
+                    attributes: ['song_id', 'title', 'duration_in_sec', 'cover_image_url', 'song_url']
                 }
-            }
+            ]
         });
         if (!artist) return res.status(404).json({error: 'Artist not found'});
         res.json(artist);

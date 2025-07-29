@@ -1,3 +1,4 @@
+require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const { sequelize } = require('./models');
@@ -26,7 +27,7 @@ app.use('/albums', albumRoutes);
 
 sequelize.sync({ alter: true }).then(() => {
     console.log('Database synced sucessfully.');
-    app.listen(3000, () => {
-        console.log('Server running on http://localhost:3000')
+    app.listen(3002, () => {
+        console.log('Admin Panel Server running on http://localhost:3002')
     });
 }).catch(err => console.error('DB sync error:', err));

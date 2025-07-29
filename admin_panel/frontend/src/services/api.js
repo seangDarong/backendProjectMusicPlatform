@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const api = axios.create({
-    baseURL: import.meta.env.VITE_API_URL || 'http://localhost:3000',
+    baseURL: import.meta.env.VITE_API_URL || 'http://localhost:3002',
 });
 
 export const fetchRoles = async () => {
@@ -15,7 +15,7 @@ export const fetchRoleById = async (id) => {
 };
 
 export const fetchRolesWithPrivileges = async () => {
-    return axios.get('http://localhost:3000/roles')
+    return axios.get('http://localhost:3002/roles')
                 .then(res => res.data)
                 .catch(err => console.error('Error fetching roles.', err));
 };
@@ -86,7 +86,7 @@ export const deleteSong = async (id) => {
 };
 
 export const fetchAlbumDetail = async (id) => {
-    const response = await fetch(`http://localhost:3000/albums/${id}`);
+    const response = await fetch(`http://localhost:3002/albums/${id}`);
     if (!response.ok) throw new Error("Failed to fetch album details");
     return response.json();
 };
@@ -117,7 +117,7 @@ export const deleteAlbum = async (id) => {
 };
 
 export const fetchArtistDetail = async (id) => {
-    const response = await fetch(`http://localhost:3000/artists/${id}`);
+    const response = await fetch(`http://localhost:3002/artists/${id}`);
     if (!response.ok) throw new Error("Failed to fetch artist details");
     return response.json();
 };

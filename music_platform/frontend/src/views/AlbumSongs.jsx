@@ -7,7 +7,6 @@ export default function AlbumSongs({ albumId, token, userId, onBack, onPlaySong 
   const [album, setAlbum] = useState(null);
   const [playlists, setPlaylists] = useState([]);
   const [selectedSong, setSelectedSong] = useState(null);
-  const [selectedPlaylist, setSelectedPlaylist] = useState('');
   const [status, setStatus] = useState('');
 
   useEffect(() => {
@@ -32,13 +31,12 @@ export default function AlbumSongs({ albumId, token, userId, onBack, onPlaySong 
     getUserPlaylists(userId, token).then(setPlaylists);
   }, [albumId, token, userId]);
 
-  const handleAddToPlaylist = async () => {
-    if (selectedSong && selectedPlaylist) {
+  const handleAddToPlaylist = async (playlistId) => {
+    if (selectedSong && playlistId) {
       try {
-        await addSongToPlaylist(selectedPlaylist, selectedSong, token);
+        await addSongToPlaylist(playlistId, selectedSong, token);
         setStatus('Song added to playlist!');
         setSelectedSong(null);
-        setSelectedPlaylist('');
         setTimeout(() => setStatus(''), 2000);
       } catch (error) {
         setStatus(error.message || 'Error adding song to playlist');
@@ -234,62 +232,109 @@ export default function AlbumSongs({ albumId, token, userId, onBack, onPlaySong 
 
       {selectedSong && (
         <div style={{ 
-          marginTop: '1.5rem', 
-          padding: '1.5rem', 
-          background: '#282828', 
-          borderRadius: 8, 
-          border: '1px solid #383838' 
+          position: 'fixed',
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          backgroundColor: 'rgba(0, 0, 0, 0.8)',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          zIndex: 1000
         }}>
-          <h3 style={{ margin: '0 0 1rem 0', fontSize: '1.1rem', color: 'white' }}>Add to Playlist</h3>
-          <div style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
-            <select 
-              value={selectedPlaylist} 
-              onChange={e => setSelectedPlaylist(e.target.value)} 
-              style={{ 
-                padding: '0.5rem', 
-                borderRadius: 4, 
-                border: '1px solid #535353',
-                backgroundColor: '#181818',
-                color: 'white',
-                flex: 1
-              }}
-            >
-              <option value="">Select a playlist...</option>
-              {playlists.map(pl => (
-                <option key={pl.playlist_id} value={pl.playlist_id}>
-                  {pl.title}
-                </option>
-              ))}
-            </select>
-            <button 
-              onClick={handleAddToPlaylist}
-              disabled={!selectedPlaylist}
-              style={{ 
-                background: selectedPlaylist ? '#1DB954' : '#535353', 
-                color: '#fff', 
-                border: 'none', 
-                borderRadius: 20, 
-                padding: '0.5rem 1rem',
-                cursor: selectedPlaylist ? 'pointer' : 'not-allowed',
-                fontWeight: 'bold'
-              }}
-            >
-              Add Song
-            </button>
-            <button 
-              onClick={() => setSelectedSong(null)}
-              style={{ 
-                background: '#535353', 
-                color: '#fff', 
-                border: 'none', 
-                borderRadius: 20, 
-                padding: '0.5rem 1rem',
-                cursor: 'pointer',
-                fontWeight: 'bold'
-              }}
-            >
-              Cancel
-            </button>
+          <div style={{ 
+            background: '#282828', 
+            borderRadius: 8, 
+            padding: '1.5rem',
+            minWidth: '400px',
+            maxWidth: '500px',
+            maxHeight: '80vh',
+            overflow: 'auto'
+          }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
+              <h3 style={{ margin: 0, fontSize: '1.2rem', color: 'white' }}>Add to playlist</h3>
+              <button 
+                onClick={() => setSelectedSong(null)}
+                style={{ 
+                  background: 'transparent', 
+                  color: '#b3b3b3', 
+                  border: 'none', 
+                  fontSize: '1.5rem',
+                  cursor: 'pointer',
+                  padding: '0.25rem'
+                }}
+              >
+                ✕
+              </button>
+            </div>
+            
+            {playlists.length === 0 ? (
+              <div style={{ 
+                textAlign: 'center', 
+                color: '#b3b3b3', 
+                padding: '2rem 1rem' 
+              }}>
+                <div style={{ fontSize: '3rem', marginBottom: '1rem' }}>📋</div>
+                <div>No playlists found</div>
+                <div style={{ fontSize: '0.9rem', marginTop: '0.5rem' }}>
+                  Create a playlist first to add songs
+                </div>
+              </div>
+            ) : (
+              <div style={{ maxHeight: '400px', overflow: 'auto' }}>
+                {playlists.map(playlist => (
+                  <div 
+                    key={playlist.playlist_id}
+                    onClick={() => handleAddToPlaylist(playlist.playlist_id)}
+                    style={{ 
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '1rem',
+                      padding: '0.75rem',
+                      borderRadius: 4,
+                      cursor: 'pointer',
+                      transition: 'background-color 0.2s',
+                      backgroundColor: 'transparent'
+                    }}
+                    onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#383838'}
+                    onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'transparent'}
+                  >
+                    {/* Playlist Icon */}
+                    <div style={{ 
+                      width: '40px', 
+                      height: '40px', 
+                      backgroundColor: '#1db954', 
+                      borderRadius: '4px',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      flexShrink: 0
+                    }}>
+                      <span style={{ color: 'white', fontSize: '1.2rem' }}>📋</span>
+                    </div>
+                    
+                    {/* Playlist Info */}
+                    <div style={{ flex: 1 }}>
+                      <div style={{ 
+                        color: 'white', 
+                        fontWeight: 'bold', 
+                        fontSize: '1rem',
+                        marginBottom: '0.2rem'
+                      }}>
+                        {playlist.title}
+                      </div>
+                      <div style={{ 
+                        color: '#b3b3b3', 
+                        fontSize: '0.9rem' 
+                      }}>
+                        {playlist.description || 'No description'}
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
         </div>
       )}
