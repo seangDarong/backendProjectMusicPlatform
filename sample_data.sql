@@ -1,4 +1,4 @@
--- Music Platform Sample Data Script
+-- Music Platform Sample Data Script with Album Covers and Song URLs
 -- Run this script after your database is created and synced
 
 -- Insert sample artists
@@ -12,92 +12,92 @@ INSERT INTO artist (name, bio, country) VALUES
 ('Elvis Presley', 'American singer and cultural icon', 'USA'),
 ('Adele', 'English singer-songwriter known for her powerful vocals', 'UK');
 
--- Insert sample albums
-INSERT INTO album (title, release_date, artist_id) VALUES
-('Abbey Road', '1969-09-26', 1),
-('A Night at the Opera', '1975-11-21', 2),
-('Thriller', '1982-11-30', 3),
-('The Dark Side of the Moon', '1973-03-01', 4),
-('Led Zeppelin IV', '1971-11-08', 5),
-('Like a Virgin', '1984-11-12', 6),
-('Elvis Presley', '1956-03-23', 7),
-('21', '2011-01-24', 8),
-('Sgt. Pepper\'s Lonely Hearts Club Band', '1967-06-01', 1),
-('Bohemian Rhapsody', '1975-10-31', 2);
+-- Insert sample albums with cover images
+INSERT INTO album (title, release_date, artist_id, cover_image_url) VALUES
+('Abbey Road', '1969-09-26', 1, 'https://files.catbox.moe/uonk7t.png'),
+('A Night at the Opera', '1975-11-21', 2, 'https://files.catbox.moe/uonk7t.png'),
+('Thriller', '1982-11-30', 3, 'https://files.catbox.moe/uonk7t.png'),
+('The Dark Side of the Moon', '1973-03-01', 4, 'https://files.catbox.moe/uonk7t.png'),
+('Led Zeppelin IV', '1971-11-08', 5, 'https://files.catbox.moe/uonk7t.png'),
+('Like a Virgin', '1984-11-12', 6, 'https://files.catbox.moe/uonk7t.png'),
+('Elvis Presley', '1956-03-23', 7, 'https://files.catbox.moe/uonk7t.png'),
+('21', '2011-01-24', 8, 'https://files.catbox.moe/uonk7t.png'),
+('Sgt. Pepper\'s Lonely Hearts Club Band', '1967-06-01', 1, 'https://files.catbox.moe/uonk7t.png'),
+('Bohemian Rhapsody', '1975-10-31', 2, 'https://files.catbox.moe/uonk7t.png');
 
--- Insert sample songs
-INSERT INTO song (title, duration_in_sec, album_id, artist_id, release_date) VALUES
+-- Insert sample songs with cover images and song URLs
+INSERT INTO song (title, duration_in_sec, album_id, artist_id, release_date, cover_image_url, song_url) VALUES
 -- Abbey Road songs
-('Come Together', 259, 1, 1, '1969-09-26'),
-('Something', 183, 1, 1, '1969-09-26'),
-('Maxwell\'s Silver Hammer', 207, 1, 1, '1969-09-26'),
-('Oh! Darling', 206, 1, 1, '1969-09-26'),
-('Here Comes the Sun', 185, 1, 1, '1969-09-26'),
+('Come Together', 259, 1, 1, '1969-09-26', 'https://files.catbox.moe/uonk7t.png', 'https://files.catbox.moe/o3ot2w.mov'),
+('Something', 183, 1, 1, '1969-09-26', 'https://files.catbox.moe/uonk7t.png', 'https://files.catbox.moe/ctusuv.mp3'),
+('Maxwell\'s Silver Hammer', 207, 1, 1, '1969-09-26', 'https://files.catbox.moe/uonk7t.png', 'https://files.catbox.moe/o3ot2w.mov'),
+('Oh! Darling', 206, 1, 1, '1969-09-26', 'https://files.catbox.moe/uonk7t.png', 'https://files.catbox.moe/ctusuv.mp3'),
+('Here Comes the Sun', 185, 1, 1, '1969-09-26', 'https://files.catbox.moe/uonk7t.png', 'https://files.catbox.moe/o3ot2w.mov'),
 
 -- A Night at the Opera songs
-('Bohemian Rhapsody', 355, 2, 2, '1975-11-21'),
-('You\'re My Best Friend', 172, 2, 2, '1975-11-21'),
-('\'39', 210, 2, 2, '1975-11-21'),
-('Sweet Lady', 240, 2, 2, '1975-11-21'),
-('Seaside Rendezvous', 126, 2, 2, '1975-11-21'),
+('Bohemian Rhapsody', 355, 2, 2, '1975-11-21', 'https://files.catbox.moe/uonk7t.png', 'https://files.catbox.moe/ctusuv.mp3'),
+('You\'re My Best Friend', 172, 2, 2, '1975-11-21', 'https://files.catbox.moe/uonk7t.png', 'https://files.catbox.moe/o3ot2w.mov'),
+('\'39', 210, 2, 2, '1975-11-21', 'https://files.catbox.moe/uonk7t.png', 'https://files.catbox.moe/ctusuv.mp3'),
+('Sweet Lady', 240, 2, 2, '1975-11-21', 'https://files.catbox.moe/uonk7t.png', 'https://files.catbox.moe/o3ot2w.mov'),
+('Seaside Rendezvous', 126, 2, 2, '1975-11-21', 'https://files.catbox.moe/uonk7t.png', 'https://files.catbox.moe/ctusuv.mp3'),
 
 -- Thriller songs
-('Wanna Be Startin\' Somethin\'', 363, 3, 3, '1982-11-30'),
-('Baby Be Mine', 260, 3, 3, '1982-11-30'),
-('The Girl Is Mine', 242, 3, 3, '1982-11-30'),
-('Thriller', 357, 3, 3, '1982-11-30'),
-('Beat It', 258, 3, 3, '1982-11-30'),
-('Billie Jean', 294, 3, 3, '1982-11-30'),
+('Wanna Be Startin\' Somethin\'', 363, 3, 3, '1982-11-30', 'https://files.catbox.moe/uonk7t.png', 'https://files.catbox.moe/o3ot2w.mov'),
+('Baby Be Mine', 260, 3, 3, '1982-11-30', 'https://files.catbox.moe/uonk7t.png', 'https://files.catbox.moe/ctusuv.mp3'),
+('The Girl Is Mine', 242, 3, 3, '1982-11-30', 'https://files.catbox.moe/uonk7t.png', 'https://files.catbox.moe/o3ot2w.mov'),
+('Thriller', 357, 3, 3, '1982-11-30', 'https://files.catbox.moe/uonk7t.png', 'https://files.catbox.moe/ctusuv.mp3'),
+('Beat It', 258, 3, 3, '1982-11-30', 'https://files.catbox.moe/uonk7t.png', 'https://files.catbox.moe/o3ot2w.mov'),
+('Billie Jean', 294, 3, 3, '1982-11-30', 'https://files.catbox.moe/uonk7t.png', 'https://files.catbox.moe/ctusuv.mp3'),
 
 -- The Dark Side of the Moon songs
-('Speak to Me', 90, 4, 4, '1973-03-01'),
-('Breathe', 163, 4, 4, '1973-03-01'),
-('On the Run', 216, 4, 4, '1973-03-01'),
-('Time', 421, 4, 4, '1973-03-01'),
-('Money', 382, 4, 4, '1973-03-01'),
+('Speak to Me', 90, 4, 4, '1973-03-01', 'https://files.catbox.moe/uonk7t.png', 'https://files.catbox.moe/o3ot2w.mov'),
+('Breathe', 163, 4, 4, '1973-03-01', 'https://files.catbox.moe/uonk7t.png', 'https://files.catbox.moe/ctusuv.mp3'),
+('On the Run', 216, 4, 4, '1973-03-01', 'https://files.catbox.moe/uonk7t.png', 'https://files.catbox.moe/o3ot2w.mov'),
+('Time', 421, 4, 4, '1973-03-01', 'https://files.catbox.moe/uonk7t.png', 'https://files.catbox.moe/ctusuv.mp3'),
+('Money', 382, 4, 4, '1973-03-01', 'https://files.catbox.moe/uonk7t.png', 'https://files.catbox.moe/o3ot2w.mov'),
 
 -- Led Zeppelin IV songs
-('Black Dog', 296, 5, 5, '1971-11-08'),
-('Rock and Roll', 220, 5, 5, '1971-11-08'),
-('The Battle of Evermore', 351, 5, 5, '1971-11-08'),
-('Stairway to Heaven', 482, 5, 5, '1971-11-08'),
-('Misty Mountain Hop', 278, 5, 5, '1971-11-08'),
+('Black Dog', 296, 5, 5, '1971-11-08', 'https://files.catbox.moe/uonk7t.png', 'https://files.catbox.moe/ctusuv.mp3'),
+('Rock and Roll', 220, 5, 5, '1971-11-08', 'https://files.catbox.moe/uonk7t.png', 'https://files.catbox.moe/o3ot2w.mov'),
+('The Battle of Evermore', 351, 5, 5, '1971-11-08', 'https://files.catbox.moe/uonk7t.png', 'https://files.catbox.moe/ctusuv.mp3'),
+('Stairway to Heaven', 482, 5, 5, '1971-11-08', 'https://files.catbox.moe/uonk7t.png', 'https://files.catbox.moe/o3ot2w.mov'),
+('Misty Mountain Hop', 278, 5, 5, '1971-11-08', 'https://files.catbox.moe/uonk7t.png', 'https://files.catbox.moe/ctusuv.mp3'),
 
 -- Like a Virgin songs
-('Material Girl', 240, 6, 6, '1984-11-12'),
-('Angel', 246, 6, 6, '1984-11-12'),
-('Like a Virgin', 218, 6, 6, '1984-11-12'),
-('Over and Over', 267, 6, 6, '1984-11-12'),
-('Love Don\'t Live Here Anymore', 285, 6, 6, '1984-11-12'),
+('Material Girl', 240, 6, 6, '1984-11-12', 'https://files.catbox.moe/uonk7t.png', 'https://files.catbox.moe/o3ot2w.mov'),
+('Angel', 246, 6, 6, '1984-11-12', 'https://files.catbox.moe/uonk7t.png', 'https://files.catbox.moe/ctusuv.mp3'),
+('Like a Virgin', 218, 6, 6, '1984-11-12', 'https://files.catbox.moe/uonk7t.png', 'https://files.catbox.moe/o3ot2w.mov'),
+('Over and Over', 267, 6, 6, '1984-11-12', 'https://files.catbox.moe/uonk7t.png', 'https://files.catbox.moe/ctusuv.mp3'),
+('Love Don\'t Live Here Anymore', 285, 6, 6, '1984-11-12', 'https://files.catbox.moe/uonk7t.png', 'https://files.catbox.moe/o3ot2w.mov'),
 
 -- Elvis Presley songs
-('Blue Suede Shoes', 120, 7, 7, '1956-03-23'),
-('I\'m Counting on You', 145, 7, 7, '1956-03-23'),
-('I Got a Woman', 135, 7, 7, '1956-03-23'),
-('One-Sided Love Affair', 127, 7, 7, '1956-03-23'),
-('I Love You Because', 163, 7, 7, '1956-03-23'),
+('Blue Suede Shoes', 120, 7, 7, '1956-03-23', 'https://files.catbox.moe/uonk7t.png', 'https://files.catbox.moe/ctusuv.mp3'),
+('I\'m Counting on You', 145, 7, 7, '1956-03-23', 'https://files.catbox.moe/uonk7t.png', 'https://files.catbox.moe/o3ot2w.mov'),
+('I Got a Woman', 135, 7, 7, '1956-03-23', 'https://files.catbox.moe/uonk7t.png', 'https://files.catbox.moe/ctusuv.mp3'),
+('One-Sided Love Affair', 127, 7, 7, '1956-03-23', 'https://files.catbox.moe/uonk7t.png', 'https://files.catbox.moe/o3ot2w.mov'),
+('I Love You Because', 163, 7, 7, '1956-03-23', 'https://files.catbox.moe/uonk7t.png', 'https://files.catbox.moe/ctusuv.mp3'),
 
 -- 21 songs
-('Rolling in the Deep', 228, 8, 8, '2011-01-24'),
-('Rumour Has It', 223, 8, 8, '2011-01-24'),
-('Turning Tables', 250, 8, 8, '2011-01-24'),
-('Don\'t You Remember', 228, 8, 8, '2011-01-24'),
-('Set Fire to the Rain', 242, 8, 8, '2011-01-24'),
-('Someone Like You', 285, 8, 8, '2011-01-24'),
+('Rolling in the Deep', 228, 8, 8, '2011-01-24', 'https://files.catbox.moe/uonk7t.png', 'https://files.catbox.moe/o3ot2w.mov'),
+('Rumour Has It', 223, 8, 8, '2011-01-24', 'https://files.catbox.moe/uonk7t.png', 'https://files.catbox.moe/ctusuv.mp3'),
+('Turning Tables', 250, 8, 8, '2011-01-24', 'https://files.catbox.moe/uonk7t.png', 'https://files.catbox.moe/o3ot2w.mov'),
+('Don\'t You Remember', 228, 8, 8, '2011-01-24', 'https://files.catbox.moe/uonk7t.png', 'https://files.catbox.moe/ctusuv.mp3'),
+('Set Fire to the Rain', 242, 8, 8, '2011-01-24', 'https://files.catbox.moe/uonk7t.png', 'https://files.catbox.moe/o3ot2w.mov'),
+('Someone Like You', 285, 8, 8, '2011-01-24', 'https://files.catbox.moe/uonk7t.png', 'https://files.catbox.moe/ctusuv.mp3'),
 
 -- Sgt. Pepper's songs
-('Sgt. Pepper\'s Lonely Hearts Club Band', 122, 9, 1, '1967-06-01'),
-('With a Little Help from My Friends', 164, 9, 1, '1967-06-01'),
-('Lucy in the Sky with Diamonds', 208, 9, 1, '1967-06-01'),
-('Getting By', 167, 9, 1, '1967-06-01'),
-('Fixing a Hole', 156, 9, 1, '1967-06-01'),
+('Sgt. Pepper\'s Lonely Hearts Club Band', 122, 9, 1, '1967-06-01', 'https://files.catbox.moe/uonk7t.png', 'https://files.catbox.moe/o3ot2w.mov'),
+('With a Little Help from My Friends', 164, 9, 1, '1967-06-01', 'https://files.catbox.moe/uonk7t.png', 'https://files.catbox.moe/ctusuv.mp3'),
+('Lucy in the Sky with Diamonds', 208, 9, 1, '1967-06-01', 'https://files.catbox.moe/uonk7t.png', 'https://files.catbox.moe/o3ot2w.mov'),
+('Getting By', 167, 9, 1, '1967-06-01', 'https://files.catbox.moe/uonk7t.png', 'https://files.catbox.moe/ctusuv.mp3'),
+('Fixing a Hole', 156, 9, 1, '1967-06-01', 'https://files.catbox.moe/uonk7t.png', 'https://files.catbox.moe/o3ot2w.mov'),
 
 -- Bohemian Rhapsody album songs
-('Death on Two Legs', 223, 10, 2, '1975-10-31'),
-('Lazing on a Sunday Afternoon', 67, 10, 2, '1975-10-31'),
-('I\'m in Love with My Car', 183, 10, 2, '1975-10-31'),
-('You\'re My Best Friend', 172, 10, 2, '1975-10-31'),
-('\'39', 210, 10, 2, '1975-10-31');
+('Death on Two Legs', 223, 10, 2, '1975-10-31', 'https://files.catbox.moe/uonk7t.png', 'https://files.catbox.moe/ctusuv.mp3'),
+('Lazing on a Sunday Afternoon', 67, 10, 2, '1975-10-31', 'https://files.catbox.moe/uonk7t.png', 'https://files.catbox.moe/o3ot2w.mov'),
+('I\'m in Love with My Car', 183, 10, 2, '1975-10-31', 'https://files.catbox.moe/uonk7t.png', 'https://files.catbox.moe/ctusuv.mp3'),
+('You\'re My Best Friend', 172, 10, 2, '1975-10-31', 'https://files.catbox.moe/uonk7t.png', 'https://files.catbox.moe/o3ot2w.mov'),
+('\'39', 210, 10, 2, '1975-10-31', 'https://files.catbox.moe/uonk7t.png', 'https://files.catbox.moe/ctusuv.mp3');
 
 -- Insert sample subscribers (users)
 INSERT INTO subscriber (username, name, dob, country, passwordHash, email) VALUES

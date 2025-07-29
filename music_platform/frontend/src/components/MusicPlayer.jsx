@@ -151,6 +151,34 @@ const MusicPlayer = ({ currentSong, isPlaying, onPlayPause, onNext, onPrevious, 
       onClick={onToggleMinimize}
     >
       <audio ref={audioRef} src={audioSrc} />
+      
+      {/* Album Cover */}
+      <div style={{ 
+        width: '40px', 
+        height: '40px', 
+        backgroundColor: '#333', 
+        borderRadius: '4px',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        overflow: 'hidden',
+        flexShrink: 0
+      }}>
+        {currentSong.cover_image_url || currentSong.Album?.cover_image_url ? (
+          <img 
+            src={currentSong.cover_image_url || currentSong.Album?.cover_image_url} 
+            alt={`${currentSong.title} cover`}
+            style={{ 
+              width: '100%', 
+              height: '100%', 
+              objectFit: 'cover' 
+            }}
+          />
+        ) : (
+          <div style={{ color: '#666', fontSize: '1rem' }}>🎵</div>
+        )}
+      </div>
+      
       <button
         onClick={(e) => {
           e.stopPropagation();
@@ -202,11 +230,41 @@ const MusicPlayer = ({ currentSong, isPlaying, onPlayPause, onNext, onPrevious, 
     }}>
       <audio ref={audioRef} src={audioSrc} />
       
-      {/* Song Info */}
-      <div style={{ minWidth: '200px' }}>
-        <div style={{ fontWeight: 'bold', fontSize: '14px' }}>{currentSong.title}</div>
-        <div style={{ opacity: 0.8, fontSize: '12px' }}>
-          {currentSong.Artist?.name || 'Unknown Artist'}
+      {/* Album Cover & Song Info */}
+      <div style={{ display: 'flex', alignItems: 'center', gap: '15px', minWidth: '250px' }}>
+        {/* Album Cover */}
+        <div style={{ 
+          width: '60px', 
+          height: '60px', 
+          backgroundColor: '#333', 
+          borderRadius: '4px',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          overflow: 'hidden',
+          flexShrink: 0
+        }}>
+          {currentSong.cover_image_url || currentSong.Album?.cover_image_url ? (
+            <img 
+              src={currentSong.cover_image_url || currentSong.Album?.cover_image_url} 
+              alt={`${currentSong.title} cover`}
+              style={{ 
+                width: '100%', 
+                height: '100%', 
+                objectFit: 'cover' 
+              }}
+            />
+          ) : (
+            <div style={{ color: '#666', fontSize: '1.5rem' }}>🎵</div>
+          )}
+        </div>
+        
+        {/* Song Info */}
+        <div style={{ flex: 1 }}>
+          <div style={{ fontWeight: 'bold', fontSize: '14px' }}>{currentSong.title}</div>
+          <div style={{ opacity: 0.8, fontSize: '12px' }}>
+            {currentSong.Artist?.name || 'Unknown Artist'}
+          </div>
         </div>
       </div>
 

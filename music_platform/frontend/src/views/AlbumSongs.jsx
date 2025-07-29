@@ -55,12 +55,12 @@ export default function AlbumSongs({ albumId, token, userId, onBack, onPlaySong 
   };
 
   return (
-    <div style={{ padding: '2rem', fontFamily: 'sans-serif', backgroundColor: '#fff', minHeight: '100vh' }}>
+    <div style={{ padding: '2rem', fontFamily: 'sans-serif', backgroundColor: '#181818', minHeight: '100vh', color: 'white' }}>
       <button 
         onClick={onBack} 
         style={{ 
           marginBottom: '2rem', 
-          background: '#95a5a6', 
+          background: '#333', 
           color: '#fff', 
           border: 'none', 
           borderRadius: 6, 
@@ -73,57 +73,142 @@ export default function AlbumSongs({ albumId, token, userId, onBack, onPlaySong 
       
       {album && (
         <div style={{ 
-          marginBottom: '1.5rem', 
-          padding: '1rem', 
-          background: '#f5f5f5', 
+          marginBottom: '2rem', 
+          padding: '2rem', 
+          background: '#282828', 
           borderRadius: 8,
-          border: '1px solid #ddd'
+          display: 'flex',
+          alignItems: 'center',
+          gap: '2rem'
         }}>
-          <div style={{ fontSize: '1.1rem', fontWeight: 'bold', marginBottom: '0.5rem' }}>
-            {album.title}
+          {/* Large Album Cover */}
+          <div style={{ 
+            width: '200px', 
+            height: '200px', 
+            backgroundColor: '#333', 
+            borderRadius: '8px',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            overflow: 'hidden',
+            flexShrink: 0
+          }}>
+            {album.cover_image_url ? (
+              <img 
+                src={album.cover_image_url} 
+                alt={`${album.title} cover`}
+                style={{ 
+                  width: '100%', 
+                  height: '100%', 
+                  objectFit: 'cover' 
+                }}
+              />
+            ) : (
+              <div style={{ color: '#666', fontSize: '4rem' }}>🎵</div>
+            )}
           </div>
-          <div style={{ color: '#666', fontSize: '0.9rem' }}>
-            Released: {album.release_date}
+          
+          {/* Album Info */}
+          <div>
+            <div style={{ fontSize: '2rem', fontWeight: 'bold', marginBottom: '0.5rem', color: 'white' }}>
+              {album.title}
+            </div>
+            <div style={{ color: '#b3b3b3', fontSize: '1.1rem', marginBottom: '0.5rem' }}>
+              by {album.Artist?.name || 'Unknown Artist'}
+            </div>
+            <div style={{ color: '#888', fontSize: '1rem' }}>
+              Released: {album.release_date}
+            </div>
           </div>
         </div>
       )}
 
+      <div style={{ marginBottom: '1rem' }}>
+        <h3 style={{ color: 'white', marginBottom: '1rem' }}>Songs</h3>
+      </div>
+
       <ul style={{ listStyle: 'none', padding: 0 }}>
-        {songs.map(song => (
+        {songs.map((song, index) => (
           <li 
             key={song.song_id} 
             style={{ 
-              marginBottom: '1rem', 
-              border: '1px solid #ccc', 
-              borderRadius: 8, 
-              padding: '1rem' 
+              marginBottom: '0.5rem', 
+              backgroundColor: '#282828', 
+              borderRadius: 4, 
+              padding: '0.75rem 1rem',
+              transition: 'background-color 0.2s',
+              cursor: 'pointer'
             }}
+            onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#383838'}
+            onMouseLeave={(e) => e.currentTarget.style.backgroundColor = '#282828'}
           >
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-              <div>
-                <div style={{ fontWeight: 'bold', fontSize: '1.1rem', marginBottom: '0.2rem' }}>
-                  {song.title}
+              <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', flex: 1 }}>
+                {/* Track Number */}
+                <div style={{ 
+                  width: '20px', 
+                  color: '#888', 
+                  fontSize: '0.9rem',
+                  textAlign: 'center'
+                }}>
+                  {index + 1}
                 </div>
-                <div style={{ color: '#666', fontSize: '0.9rem', marginBottom: '0.2rem' }}>
-                  by {song.Artist?.name || 'Unknown Artist'}
+                
+                {/* Song Cover (smaller) */}
+                <div style={{ 
+                  width: '40px', 
+                  height: '40px', 
+                  backgroundColor: '#333', 
+                  borderRadius: '4px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  overflow: 'hidden',
+                  flexShrink: 0
+                }}>
+                  {song.cover_image_url || album?.cover_image_url ? (
+                    <img 
+                      src={song.cover_image_url || album?.cover_image_url} 
+                      alt={`${song.title} cover`}
+                      style={{ 
+                        width: '100%', 
+                        height: '100%', 
+                        objectFit: 'cover' 
+                      }}
+                    />
+                  ) : (
+                    <div style={{ color: '#666', fontSize: '1rem' }}>🎵</div>
+                  )}
                 </div>
-                <div style={{ color: '#666', fontSize: '0.9rem' }}>
-                  Duration: {formatDuration(song.duration_in_sec)}
+                
+                {/* Song Info */}
+                <div style={{ flex: 1 }}>
+                  <div style={{ fontWeight: 'bold', fontSize: '1rem', marginBottom: '0.2rem', color: 'white' }}>
+                    {song.title}
+                  </div>
+                  <div style={{ color: '#b3b3b3', fontSize: '0.9rem' }}>
+                    {song.Artist?.name || 'Unknown Artist'}
+                  </div>
+                </div>
+                
+                {/* Duration */}
+                <div style={{ color: '#888', fontSize: '0.9rem', minWidth: '50px', textAlign: 'right' }}>
+                  {formatDuration(song.duration_in_sec)}
                 </div>
               </div>
+              
               <div style={{ display: 'flex', gap: '0.5rem' }}>
                 <button 
                   onClick={() => onPlaySong && onPlaySong(song, songs)} 
                   style={{ 
-                    background: '#27ae60', 
+                    background: '#1DB954', 
                     color: '#fff', 
                     border: 'none', 
-                    borderRadius: 4, 
+                    borderRadius: 20, 
                     padding: '0.5rem 1rem',
                     cursor: 'pointer',
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: '0.25rem'
+                    fontSize: '0.9rem',
+                    fontWeight: 'bold'
                   }}
                 >
                   ▶ Play
@@ -131,10 +216,10 @@ export default function AlbumSongs({ albumId, token, userId, onBack, onPlaySong 
                 <button 
                   onClick={() => setSelectedSong(song.song_id)} 
                   style={{ 
-                    background: '#1976d2', 
+                    background: '#535353', 
                     color: '#fff', 
                     border: 'none', 
-                    borderRadius: 4, 
+                    borderRadius: 20, 
                     padding: '0.5rem 1rem',
                     cursor: 'pointer'
                   }}
@@ -150,12 +235,12 @@ export default function AlbumSongs({ albumId, token, userId, onBack, onPlaySong 
       {selectedSong && (
         <div style={{ 
           marginTop: '1.5rem', 
-          padding: '1rem', 
-          background: '#f0f8ff', 
+          padding: '1.5rem', 
+          background: '#282828', 
           borderRadius: 8, 
-          border: '1px solid #cce7ff' 
+          border: '1px solid #383838' 
         }}>
-          <h3 style={{ margin: '0 0 1rem 0', fontSize: '1.1rem' }}>Add to Playlist</h3>
+          <h3 style={{ margin: '0 0 1rem 0', fontSize: '1.1rem', color: 'white' }}>Add to Playlist</h3>
           <div style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
             <select 
               value={selectedPlaylist} 
@@ -163,7 +248,9 @@ export default function AlbumSongs({ albumId, token, userId, onBack, onPlaySong 
               style={{ 
                 padding: '0.5rem', 
                 borderRadius: 4, 
-                border: '1px solid #ccc',
+                border: '1px solid #535353',
+                backgroundColor: '#181818',
+                color: 'white',
                 flex: 1
               }}
             >
@@ -178,12 +265,13 @@ export default function AlbumSongs({ albumId, token, userId, onBack, onPlaySong 
               onClick={handleAddToPlaylist}
               disabled={!selectedPlaylist}
               style={{ 
-                background: selectedPlaylist ? '#388e3c' : '#ccc', 
+                background: selectedPlaylist ? '#1DB954' : '#535353', 
                 color: '#fff', 
                 border: 'none', 
-                borderRadius: 4, 
+                borderRadius: 20, 
                 padding: '0.5rem 1rem',
-                cursor: selectedPlaylist ? 'pointer' : 'not-allowed'
+                cursor: selectedPlaylist ? 'pointer' : 'not-allowed',
+                fontWeight: 'bold'
               }}
             >
               Add Song
@@ -191,12 +279,13 @@ export default function AlbumSongs({ albumId, token, userId, onBack, onPlaySong 
             <button 
               onClick={() => setSelectedSong(null)}
               style={{ 
-                background: '#666', 
+                background: '#535353', 
                 color: '#fff', 
                 border: 'none', 
-                borderRadius: 4, 
+                borderRadius: 20, 
                 padding: '0.5rem 1rem',
-                cursor: 'pointer'
+                cursor: 'pointer',
+                fontWeight: 'bold'
               }}
             >
               Cancel
@@ -209,9 +298,9 @@ export default function AlbumSongs({ albumId, token, userId, onBack, onPlaySong 
         <div style={{ 
           marginTop: '1rem', 
           padding: '0.75rem', 
-          background: status.includes('Error') || status.includes('already') ? '#f8d7da' : '#d4edda', 
-          color: status.includes('Error') || status.includes('already') ? '#721c24' : '#155724', 
-          border: `1px solid ${status.includes('Error') || status.includes('already') ? '#f5c6cb' : '#c3e6cb'}`, 
+          background: status.includes('Error') || status.includes('already') ? '#5e2129' : '#1e4620', 
+          color: status.includes('Error') || status.includes('already') ? '#f5c6cb' : '#d4edda', 
+          border: `1px solid ${status.includes('Error') || status.includes('already') ? '#842029' : '#2ea043'}`, 
           borderRadius: 4, 
           fontWeight: 'bold' 
         }}>

@@ -14,6 +14,11 @@ const Album = sequelize.define('Album', {
     release_date: { 
         type: DataTypes.DATEONLY, 
         allowNull: false 
+    },
+    cover_image_url: { 
+        type: DataTypes.STRING, 
+        allowNull: true,
+        defaultValue: 'https://files.catbox.moe/uonk7t.png'
     }
 }, {
     tableName: 'album',

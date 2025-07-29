@@ -22,6 +22,16 @@ const Song = sequelize.define('Song', {
     release_date: { 
         type: DataTypes.DATEONLY, 
         allowNull: false 
+    },
+    cover_image_url: { 
+        type: DataTypes.STRING, 
+        allowNull: true,
+        defaultValue: 'https://files.catbox.moe/uonk7t.png'
+    },
+    song_url: { 
+        type: DataTypes.STRING, 
+        allowNull: true,
+        defaultValue: 'https://files.catbox.moe/o3ot2w.mov'
     }
 }, {
     tableName: 'song',

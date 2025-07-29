@@ -10,40 +10,94 @@ export default function Albums({ token, onSelectAlbum }) {
   }, [token]);
 
   return (
-    <div style={{ padding: '2rem', fontFamily: 'sans-serif', backgroundColor: '#fff', minHeight: '100vh' }}>
-      <h2 style={{ color: '#2c3e50', marginBottom: '2rem', fontSize: '2rem' }}>Albums</h2>
-      <ul style={{ listStyle: 'none', padding: 0, maxWidth: '800px' }}>
+    <div style={{ padding: '2rem', fontFamily: 'sans-serif', backgroundColor: '#181818', minHeight: '100vh', color: 'white' }}>
+      <h2 style={{ color: 'white', marginBottom: '2rem', fontSize: '2rem' }}>Albums</h2>
+      <div style={{ 
+        display: 'grid', 
+        gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))', 
+        gap: '2rem', 
+        maxWidth: '1200px' 
+      }}>
         {albums.map(album => (
-          <li key={album.album_id} style={{ marginBottom: '1rem', border: '1px solid #ddd', borderRadius: 8, padding: '1.5rem', backgroundColor: '#f8f9fa', boxShadow: '0 2px 4px rgba(0,0,0,0.1)' }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-              <div>
-                <div style={{ fontWeight: 'bold', fontSize: '1.2rem', color: '#2c3e50', marginBottom: '0.5rem' }}>{album.title}</div>
-                <div style={{ color: '#666', fontSize: '1rem', marginBottom: '0.25rem' }}>
-                  by {album.Artist?.name || 'Unknown Artist'}
+          <div key={album.album_id} style={{ 
+            backgroundColor: '#282828', 
+            borderRadius: '8px', 
+            padding: '1rem', 
+            transition: 'background-color 0.2s',
+            cursor: 'pointer',
+            display: 'flex',
+            flexDirection: 'column'
+          }}
+          onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#383838'}
+          onMouseLeave={(e) => e.currentTarget.style.backgroundColor = '#282828'}
+          onClick={() => onSelectAlbum(album.album_id)}
+          >
+            {/* Album Cover */}
+            <div style={{ 
+              width: '100%', 
+              aspectRatio: '1/1', 
+              backgroundColor: '#333', 
+              borderRadius: '4px', 
+              marginBottom: '1rem',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              overflow: 'hidden'
+            }}>
+              {album.cover_image_url ? (
+                <img 
+                  src={album.cover_image_url} 
+                  alt={`${album.title} cover`}
+                  style={{ 
+                    width: '100%', 
+                    height: '100%', 
+                    objectFit: 'cover' 
+                  }}
+                />
+              ) : (
+                <div style={{ 
+                  color: '#666', 
+                  fontSize: '3rem',
+                  textAlign: 'center'
+                }}>
+                  🎵
                 </div>
-                <div style={{ color: '#7f8c8d', fontSize: '0.95rem' }}>{album.release_date}</div>
-              </div>
-              <button 
-                onClick={() => onSelectAlbum(album.album_id)} 
-                style={{ 
-                  padding: '0.75rem 1.5rem', 
-                  borderRadius: 6, 
-                  border: 'none', 
-                  background: '#3498db', 
-                  color: '#fff',
-                  cursor: 'pointer',
-                  fontSize: '1rem',
-                  transition: 'background-color 0.2s'
-                }}
-                onMouseEnter={(e) => e.target.style.backgroundColor = '#2980b9'}
-                onMouseLeave={(e) => e.target.style.backgroundColor = '#3498db'}
-              >
-                View Songs
-              </button>
+              )}
             </div>
-          </li>
+            
+            {/* Album Info */}
+            <div style={{ flex: 1 }}>
+              <div style={{ 
+                fontWeight: 'bold', 
+                fontSize: '1rem', 
+                color: 'white', 
+                marginBottom: '0.5rem',
+                overflow: 'hidden',
+                textOverflow: 'ellipsis',
+                whiteSpace: 'nowrap'
+              }}>
+                {album.title}
+              </div>
+              <div style={{ 
+                color: '#b3b3b3', 
+                fontSize: '0.875rem', 
+                marginBottom: '0.25rem',
+                overflow: 'hidden',
+                textOverflow: 'ellipsis',
+                whiteSpace: 'nowrap'
+              }}>
+                {album.Artist?.name || 'Unknown Artist'}
+              </div>
+              <div style={{ 
+                color: '#888', 
+                fontSize: '0.8rem' 
+              }}>
+                {album.release_date}
+              </div>
+            </div>
+          </div>
         ))}
-      </ul>
+      </div>
     </div>
   );
 }
