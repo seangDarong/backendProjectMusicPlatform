@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect, useMemo } from 'react';
 
-const MusicPlayer = ({ currentSong, isPlaying, onPlayPause, onNext, onPrevious, playlist = [], isMinimized, onToggleMinimize }) => {
+const MusicPlayer = ({ currentSong, isPlaying, onPlayPause, onNext, onPrevious, playlist = [], isMinimized, onToggleMinimize, userProfile }) => {
   const audioRef = useRef(null);
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
@@ -100,6 +100,12 @@ const MusicPlayer = ({ currentSong, isPlaying, onPlayPause, onNext, onPrevious, 
     const audio = audioRef.current;
     if (!audio) return;
     
+    // Prevent seeking for free users
+    if (!canSeek) {
+      alert('Seeking is only available for Premium users. Upgrade to Premium to unlock this feature!');
+      return;
+    }
+    
     const rect = e.currentTarget.getBoundingClientRect();
     const pos = (e.clientX - rect.left) / rect.width;
     audio.currentTime = pos * duration;
@@ -125,6 +131,32 @@ const MusicPlayer = ({ currentSong, isPlaying, onPlayPause, onNext, onPrevious, 
   const shouldPulse = useMemo(() => {
     return isLoading;
   }, [isLoading]);
+
+  // Check if user is on free plan (disable skip and seek for free users)
+  const isFreeUser = userProfile?.planType === 'free';
+  
+  // Free users can't skip songs
+  const canSkip = !isFreeUser;
+  
+  // Free users can't seek in songs
+  const canSeek = !isFreeUser;
+
+  // Wrapper functions to handle premium restrictions
+  const handleNext = () => {
+    if (!canSkip) {
+      alert('Song skipping is only available for Premium users. Upgrade to Premium to unlock unlimited skips!');
+      return;
+    }
+    onNext();
+  };
+
+  const handlePrevious = () => {
+    if (!canSkip) {
+      alert('Song skipping is only available for Premium users. Upgrade to Premium to unlock unlimited skips!');
+      return;
+    }
+    onPrevious();
+  };
 
   if (!currentSong) {
     return null;
@@ -291,16 +323,17 @@ const MusicPlayer = ({ currentSong, isPlaying, onPlayPause, onNext, onPrevious, 
       {/* Controls */}
       <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
         <button
-          onClick={onPrevious}
-          disabled={!playlist.length}
+          onClick={handlePrevious}
+          disabled={!playlist.length || !canSkip}
+          title={!canSkip ? "Upgrade to Premium to skip songs" : ""}
           style={{
-            background: 'rgba(255,255,255,0.2)',
+            background: !canSkip ? 'rgba(255,255,255,0.1)' : 'rgba(255,255,255,0.2)',
             border: 'none',
-            color: 'white',
+            color: !canSkip ? 'rgba(255,255,255,0.5)' : 'white',
             borderRadius: '50%',
             width: '40px',
             height: '40px',
-            cursor: 'pointer',
+            cursor: (!playlist.length || !canSkip) ? 'not-allowed' : 'pointer',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center'
@@ -330,16 +363,17 @@ const MusicPlayer = ({ currentSong, isPlaying, onPlayPause, onNext, onPrevious, 
         </button>
         
         <button
-          onClick={onNext}
-          disabled={!playlist.length}
+          onClick={handleNext}
+          disabled={!playlist.length || !canSkip}
+          title={!canSkip ? "Upgrade to Premium to skip songs" : ""}
           style={{
-            background: 'rgba(255,255,255,0.2)',
+            background: !canSkip ? 'rgba(255,255,255,0.1)' : 'rgba(255,255,255,0.2)',
             border: 'none',
-            color: 'white',
+            color: !canSkip ? 'rgba(255,255,255,0.5)' : 'white',
             borderRadius: '50%',
             width: '40px',
             height: '40px',
-            cursor: 'pointer',
+            cursor: (!playlist.length || !canSkip) ? 'not-allowed' : 'pointer',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center'
@@ -354,13 +388,15 @@ const MusicPlayer = ({ currentSong, isPlaying, onPlayPause, onNext, onPrevious, 
         <span style={{ fontSize: '12px', minWidth: '40px' }}>{formatTime(currentTime)}</span>
         <div
           onClick={handleSeek}
+          title={!canSeek ? "Upgrade to Premium to seek in songs" : ""}
           style={{
             flex: 1,
             height: '6px',
             background: 'rgba(255,255,255,0.3)',
             borderRadius: '3px',
-            cursor: 'pointer',
-            position: 'relative'
+            cursor: canSeek ? 'pointer' : 'not-allowed',
+            position: 'relative',
+            opacity: canSeek ? 1 : 0.6
           }}
         >
           <div

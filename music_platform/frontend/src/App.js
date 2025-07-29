@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate, useNavigate, useParams, useLocation } from 'react-router-dom';
 import UserPlaylists from './views/UserPlaylists';
 import Login from './views/Login';
@@ -167,7 +167,7 @@ function PlaylistSongsWrapper({ token, onPlaySong }) {
 }
 
 // Main Layout Component with Sidebar
-function MainLayout({ children, currentSong, isPlaying, onPlayPause, onNext, onPrevious, currentPlaylist, isPlayerMinimized, onToggleMinimize }) {
+function MainLayout({ children, currentSong, isPlaying, onPlayPause, onNext, onPrevious, currentPlaylist, isPlayerMinimized, onToggleMinimize, userProfile }) {
   const location = useLocation();
   const navigate = useNavigate();
   
@@ -328,6 +328,7 @@ function MainLayout({ children, currentSong, isPlaying, onPlayPause, onNext, onP
         playlist={currentPlaylist}
         isMinimized={isPlayerMinimized}
         onToggleMinimize={onToggleMinimize}
+        userProfile={userProfile}
       />
     </div>
   );
@@ -338,6 +339,9 @@ function App() {
   const [token, setToken] = useState(() => localStorage.getItem('token'));
   const [userId, setUserId] = useState(() => localStorage.getItem('userId'));
   const [playlistRefresh, setPlaylistRefresh] = useState(0);
+  
+  // User profile state for subscription plan
+  const [userProfile, setUserProfile] = useState(null);
 
   // Music player state
   const [currentSong, setCurrentSong] = useState(null);
@@ -356,12 +360,31 @@ function App() {
   const handleLogout = () => {
     setToken(null);
     setUserId(null);
+    setUserProfile(null);
     localStorage.removeItem('token');
     localStorage.removeItem('userId');
     setCurrentSong(null);
     setIsPlaying(false);
     setCurrentPlaylist([]);
   };
+
+  // Fetch user profile to get subscription plan
+  useEffect(() => {
+    if (token && userId) {
+      fetch('http://localhost:3000/api/users/profile', {
+        headers: { Authorization: `Bearer ${token}` }
+      })
+        .then(res => res.json())
+        .then(data => {
+          if (data && !data.error) {
+            setUserProfile(data);
+          }
+        })
+        .catch(error => {
+          console.error('Error fetching user profile:', error);
+        });
+    }
+  }, [token, userId]);
 
   // Music player functions
   const handlePlaySong = (song, playlist = []) => {
@@ -428,6 +451,7 @@ function App() {
                 currentPlaylist={currentPlaylist}
                 isPlayerMinimized={isPlayerMinimized}
                 onToggleMinimize={() => setIsPlayerMinimized(!isPlayerMinimized)}
+                userProfile={userProfile}
               >
                 <AlbumsWithNavigation token={token} />
               </MainLayout>
@@ -445,6 +469,7 @@ function App() {
                 currentPlaylist={currentPlaylist}
                 isPlayerMinimized={isPlayerMinimized}
                 onToggleMinimize={() => setIsPlayerMinimized(!isPlayerMinimized)}
+                userProfile={userProfile}
               >
                 <AlbumSongsWrapper token={token} userId={userId} onPlaySong={handlePlaySong} />
               </MainLayout>
@@ -462,6 +487,7 @@ function App() {
                 currentPlaylist={currentPlaylist}
                 isPlayerMinimized={isPlayerMinimized}
                 onToggleMinimize={() => setIsPlayerMinimized(!isPlayerMinimized)}
+                userProfile={userProfile}
               >
                 <ArtistsWithNavigation token={token} />
               </MainLayout>
@@ -479,6 +505,7 @@ function App() {
                 currentPlaylist={currentPlaylist}
                 isPlayerMinimized={isPlayerMinimized}
                 onToggleMinimize={() => setIsPlayerMinimized(!isPlayerMinimized)}
+                userProfile={userProfile}
               >
                 <ArtistAlbumsWrapper token={token} />
               </MainLayout>
@@ -496,6 +523,7 @@ function App() {
                 currentPlaylist={currentPlaylist}
                 isPlayerMinimized={isPlayerMinimized}
                 onToggleMinimize={() => setIsPlayerMinimized(!isPlayerMinimized)}
+                userProfile={userProfile}
               >
                 <PlaylistsWithNavigation token={token} userId={userId} playlistRefresh={playlistRefresh} />
               </MainLayout>
@@ -513,6 +541,7 @@ function App() {
                 currentPlaylist={currentPlaylist}
                 isPlayerMinimized={isPlayerMinimized}
                 onToggleMinimize={() => setIsPlayerMinimized(!isPlayerMinimized)}
+                userProfile={userProfile}
               >
                 <CreatePlaylistWithNavigation 
                   token={token} 
@@ -534,6 +563,7 @@ function App() {
                 currentPlaylist={currentPlaylist}
                 isPlayerMinimized={isPlayerMinimized}
                 onToggleMinimize={() => setIsPlayerMinimized(!isPlayerMinimized)}
+                userProfile={userProfile}
               >
                 <PlaylistSongsWrapper token={token} onPlaySong={handlePlaySong} />
               </MainLayout>
@@ -551,6 +581,7 @@ function App() {
                 currentPlaylist={currentPlaylist}
                 isPlayerMinimized={isPlayerMinimized}
                 onToggleMinimize={() => setIsPlayerMinimized(!isPlayerMinimized)}
+                userProfile={userProfile}
               >
                 <Profile token={token} onLogout={handleLogout} />
               </MainLayout>
