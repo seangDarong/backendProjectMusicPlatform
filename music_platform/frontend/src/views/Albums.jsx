@@ -45,7 +45,7 @@ export default function Albums({ token, onSelectAlbum }) {
             {/* Album Cover */}
             <div style={{ 
               width: '100%', 
-              aspectRatio: '1/1', 
+              height: '200px',
               backgroundColor: '#eae2f7', 
               borderRadius: '8px', 
               marginBottom: '1rem',

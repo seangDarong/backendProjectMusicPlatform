@@ -119,10 +119,10 @@ export default function CreatePlaylist({ token, userId, onCreated }) {
                 transition: 'background-color 0.2s',
                 fontWeight: 'bold'
               }}
-              onMouseEnter={(e) => e.target.style.backgroundColor = '#229954'}
+              onMouseEnter={(e) => e.target.style.backgroundColor = '#8b5cf6'}
               onMouseLeave={(e) => e.target.style.backgroundColor = '#6b21a8'}
             >
-              ✓ Create Playlist
+              Create Playlist
             </button>
             <button 
               type="button"

@@ -364,13 +364,21 @@ export default function AlbumSongs({ albumId, token, userId, onBack, onPlaySong 
 
       {status && (
         <div style={{ 
+          position: 'fixed',
+          top: '50%',
+          left: '50%',
+          transform: 'translate(-50%, -50%)',
           marginTop: '1rem', 
           padding: '0.75rem', 
           background: status.includes('Error') || status.includes('already') ? '#fef2f2' : '#f0fdf4', 
           color: status.includes('Error') || status.includes('already') ? '#dc2626' : '#16a34a', 
           border: `1px solid ${status.includes('Error') || status.includes('already') ? '#fecaca' : '#bbf7d0'}`, 
           borderRadius: 8, 
-          fontWeight: 'bold' 
+          fontWeight: 'bold',
+          zIndex: 1001,
+          boxShadow: '0 4px 12px rgba(0, 0, 0, 0.15)',
+          minWidth: '300px',
+          textAlign: 'center'
         }}>
           {status}
         </div>

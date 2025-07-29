@@ -1,11 +1,13 @@
 import React, { useState, useRef, useEffect, useMemo } from 'react';
 
-const MusicPlayer = ({ currentSong, isPlaying, onPlayPause, onNext, onPrevious, playlist = [], isMinimized, onToggleMinimize, userProfile }) => {
+const MusicPlayer = ({ currentSong, isPlaying, onPlayPause, onNext, onPrevious, playlist = [], userProfile }) => {
   const audioRef = useRef(null);
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
   const [volume, setVolume] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
+  // Add local playing state to avoid App.js conflicts
+  const [localIsPlaying, setLocalIsPlaying] = useState(false);
 
   useEffect(() => {
     const audio = audioRef.current;
@@ -62,32 +64,26 @@ const MusicPlayer = ({ currentSong, isPlaying, onPlayPause, onNext, onPrevious, 
     if (isPlaying) {
       const playWhenLoaded = () => {
         audio.play().catch(console.error);
-        audio.removeEventListener('loadeddata', playWhenLoaded);
+        setLocalIsPlaying(true); // Update local state
+        audio.removeEventListener('canplaythrough', playWhenLoaded);
       };
-      audio.addEventListener('loadeddata', playWhenLoaded);
-    }
-  }, [currentSong?.song_id]); // eslint-disable-line react-hooks/exhaustive-deps
-
-  useEffect(() => {
-    const audio = audioRef.current;
-    if (!audio) return;
-
-    if (isPlaying) {
-      // Only try to play if audio is loaded
-      if (audio.readyState >= 2) { // HAVE_CURRENT_DATA or higher
-        audio.play().catch(console.error);
-      } else {
-        // Wait for audio to load before playing
-        const playWhenReady = () => {
-          audio.play().catch(console.error);
-          audio.removeEventListener('canplay', playWhenReady);
-        };
-        audio.addEventListener('canplay', playWhenReady);
-      }
+      audio.addEventListener('canplaythrough', playWhenLoaded);
     } else {
-      audio.pause();
+      setLocalIsPlaying(false); // Sync local state
     }
-  }, [isPlaying]);
+  }, [currentSong?.song_id]); // Only run when song actually changes
+
+  // Remove this useEffect to avoid conflicts with direct audio control
+  // useEffect(() => {
+  //   const audio = audioRef.current;
+  //   if (!audio) return;
+
+  //   if (isPlaying) {
+  //     audio.play().catch(console.error);
+  //   } else {
+  //     audio.pause();
+  //   }
+  // }, [isPlaying]);
 
   useEffect(() => {
     const audio = audioRef.current;
@@ -157,299 +153,217 @@ const MusicPlayer = ({ currentSong, isPlaying, onPlayPause, onNext, onPrevious, 
     onPrevious();
   };
 
+  // Completely self-contained play/pause without App.js involvement
+  const handleDirectPlayPause = () => {
+    const audio = audioRef.current;
+    if (!audio) return;
+    
+    console.log('Direct play/pause clicked, audio.paused:', audio.paused, 'currentTime:', audio.currentTime);
+    
+    if (audio.paused) {
+      audio.play().catch(console.error);
+      setLocalIsPlaying(true);
+    } else {
+      audio.pause();
+      setLocalIsPlaying(false);
+    }
+    // Don't call onPlayPause() to avoid App.js conflicts
+  };
+
   if (!currentSong) {
     return null;
   }
 
-  if (isMinimized) {
-    return (
+  return (
+    <>
+      {/* Audio element should persist across minimize/maximize */}
+      <audio ref={audioRef} src={audioSrc} />
+      
       <div style={{
         position: 'fixed',
-        bottom: '20px',
-        right: '20px',
-        background: '#222',
+        bottom: 0,
+        left: 0,
+        right: 0,
+        background: '#181818',
         color: 'white',
-        padding: '10px 15px',
-        borderRadius: '25px',
+        padding: '15px 20px',
         display: 'flex',
         alignItems: 'center',
-        gap: '10px',
-        boxShadow: '0 4px 15px rgba(0,0,0,0.3)',
-        zIndex: 1000,
-        cursor: 'pointer',
-        minWidth: '200px'
-      }}
-      onClick={onToggleMinimize}
-    >
-      <audio ref={audioRef} src={audioSrc} />
-      
-      {/* Album Cover */}
-      <div style={{ 
-        width: '40px', 
-        height: '40px', 
-        backgroundColor: '#333', 
-        borderRadius: '4px',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        overflow: 'hidden',
-        flexShrink: 0
+        gap: '20px',
+        boxShadow: '0 -4px 15px rgba(0,0,0,0.2)',
+        zIndex: 1000
       }}>
-        {currentSong.cover_image_url || currentSong.Album?.cover_image_url ? (
-          <img 
-            src={currentSong.cover_image_url || currentSong.Album?.cover_image_url} 
-            alt={`${currentSong.title} cover`}
-            style={{ 
-              width: '100%', 
-              height: '100%', 
-              objectFit: 'cover' 
-            }}
-          />
-        ) : (
-          <div style={{ color: '#666', fontSize: '1rem' }}>🎵</div>
-        )}
-      </div>
-      
-      <button
-        onClick={(e) => {
-          e.stopPropagation();
-          if (!shouldPulse) onPlayPause(); // Only allow click if not pulsing
-        }}
-        disabled={shouldPulse} // Disable while pulsing
-        style={{
-          background: shouldPulse ? 'rgba(255,255,255,0.1)' : 'rgba(255,255,255,0.3)',
-          border: 'none',
-          color: shouldPulse ? 'rgba(255,255,255,0.5)' : 'white',
-          borderRadius: '50%',
-          width: '30px',
-          height: '30px',
-          cursor: shouldPulse ? 'not-allowed' : 'pointer',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          fontSize: '12px'
-        }}
-      >
-        {isPlaying ? '⏸' : '▶'}
-      </button>
-      <div style={{ flex: 1, fontSize: '12px' }}>
-        <div style={{ fontWeight: 'bold', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
-          {currentSong.title}
-        </div>
-        <div style={{ opacity: 0.8, fontSize: '10px', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
-          {currentSong.Artist?.name || 'Unknown Artist'}
-        </div>
-      </div>
-    </div>
-    );
-  }
-
-  return (
-    <div style={{
-      position: 'fixed',
-      bottom: 0,
-      left: 0,
-      right: 0,
-      background: '#181818',
-      color: 'white',
-      padding: '15px 20px',
-      display: 'flex',
-      alignItems: 'center',
-      gap: '20px',
-      boxShadow: '0 -4px 15px rgba(0,0,0,0.2)',
-      zIndex: 1000
-    }}>
-      <audio ref={audioRef} src={audioSrc} />
-      
-      {/* Album Cover & Song Info */}
-      <div style={{ display: 'flex', alignItems: 'center', gap: '15px', minWidth: '250px' }}>
-        {/* Album Cover */}
-        <div style={{ 
-          width: '60px', 
-          height: '60px', 
-          backgroundColor: '#333', 
-          borderRadius: '4px',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          overflow: 'hidden',
-          flexShrink: 0
-        }}>
-          {currentSong.cover_image_url || currentSong.Album?.cover_image_url ? (
-            <img 
-              src={currentSong.cover_image_url || currentSong.Album?.cover_image_url} 
-              alt={`${currentSong.title} cover`}
-              style={{ 
-                width: '100%', 
-                height: '100%', 
-                objectFit: 'cover' 
-              }}
-            />
-          ) : (
-            <div style={{ color: '#666', fontSize: '1.5rem' }}>🎵</div>
-          )}
-        </div>
         
-        {/* Song Info */}
-        <div style={{ flex: 1 }}>
-          <div style={{ fontWeight: 'bold', fontSize: '14px' }}>{currentSong.title}</div>
-          <div style={{ opacity: 0.8, fontSize: '12px' }}>
-            {currentSong.Artist?.name || 'Unknown Artist'}
-          </div>
-        </div>
-      </div>
-
-      {/* Minimize Button */}
-      <button
-        onClick={onToggleMinimize}
-        style={{
-          background: 'rgba(255,255,255,0.2)',
-          border: 'none',
-          color: 'white',
-          borderRadius: '4px',
-          width: '30px',
-          height: '30px',
-          cursor: 'pointer',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          fontSize: '12px'
-        }}
-      >
-        ⬇
-      </button>
-
-      {/* Controls */}
-      <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
-        <button
-          onClick={handlePrevious}
-          disabled={!playlist.length || !canSkip}
-          title={!canSkip ? "Upgrade to Premium to skip songs" : ""}
-          style={{
-            background: !canSkip ? 'rgba(255,255,255,0.1)' : 'rgba(255,255,255,0.2)',
-            border: 'none',
-            color: !canSkip ? 'rgba(255,255,255,0.5)' : 'white',
-            borderRadius: '50%',
-            width: '40px',
-            height: '40px',
-            cursor: (!playlist.length || !canSkip) ? 'not-allowed' : 'pointer',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center'
-          }}
-        >
-          ⏮
-        </button>
-        
-        <button
-          onClick={onPlayPause}
-          disabled={shouldPulse} // Disable while pulsing
-          style={{
-            background: shouldPulse ? 'rgba(255,255,255,0.1)' : 'rgba(255,255,255,0.3)',
-            border: 'none',
-            color: shouldPulse ? 'rgba(255,255,255,0.5)' : 'white',
-            borderRadius: '50%',
-            width: '50px',
-            height: '50px',
-            cursor: shouldPulse ? 'not-allowed' : 'pointer',
+        {/* Album Cover & Song Info */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: '15px', minWidth: '250px' }}>
+          {/* Album Cover */}
+          <div style={{ 
+            width: '60px', 
+            height: '60px', 
+            backgroundColor: '#333', 
+            borderRadius: '4px',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            fontSize: '20px'
-          }}
-        >
-          {isPlaying ? '⏸' : '▶'}
-        </button>
-        
-        <button
-          onClick={handleNext}
-          disabled={!playlist.length || !canSkip}
-          title={!canSkip ? "Upgrade to Premium to skip songs" : ""}
-          style={{
-            background: !canSkip ? 'rgba(255,255,255,0.1)' : 'rgba(255,255,255,0.2)',
-            border: 'none',
-            color: !canSkip ? 'rgba(255,255,255,0.5)' : 'white',
-            borderRadius: '50%',
-            width: '40px',
-            height: '40px',
-            cursor: (!playlist.length || !canSkip) ? 'not-allowed' : 'pointer',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center'
-          }}
-        >
-          ⏭
-        </button>
-      </div>
+            overflow: 'hidden',
+            flexShrink: 0
+          }}>
+            {currentSong.cover_image_url || currentSong.Album?.cover_image_url ? (
+              <img 
+                src={currentSong.cover_image_url || currentSong.Album?.cover_image_url} 
+                alt={`${currentSong.title} cover`}
+                style={{ 
+                  width: '100%', 
+                  height: '100%', 
+                  objectFit: 'cover' 
+                }}
+              />
+            ) : (
+              <div style={{ color: '#666', fontSize: '1.5rem' }}>🎵</div>
+            )}
+          </div>
+          
+          {/* Song Info */}
+          <div style={{ flex: 1 }}>
+            <div style={{ fontWeight: 'bold', fontSize: '14px' }}>{currentSong.title}</div>
+            <div style={{ opacity: 0.8, fontSize: '12px' }}>
+              {currentSong.Artist?.name || 'Unknown Artist'}
+            </div>
+          </div>
+        </div>
 
-      {/* Progress Bar */}
-      <div style={{ flex: 1, display: 'flex', alignItems: 'center', gap: '10px' }}>
-        <span style={{ fontSize: '12px', minWidth: '40px' }}>{formatTime(currentTime)}</span>
-        <div
-          onClick={handleSeek}
-          title={!canSeek ? "Upgrade to Premium to seek in songs" : ""}
-          style={{
-            flex: 1,
-            height: '6px',
-            background: 'rgba(255,255,255,0.3)',
-            borderRadius: '3px',
-            cursor: canSeek ? 'pointer' : 'not-allowed',
-            position: 'relative',
-            opacity: canSeek ? 1 : 0.6
-          }}
-        >
-          <div
+        {/* Controls */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
+          <button
+            onClick={handlePrevious}
+            disabled={!playlist.length || !canSkip}
+            title={!canSkip ? "Upgrade to Premium to skip songs" : ""}
             style={{
-              width: shouldPulse ? '100%' : `${duration ? (currentTime / duration) * 100 : 0}%`,
-              height: '100%',
-              background: shouldPulse ? '#B0B0B0' : 'white', // Light grey instead of green
+              background: !canSkip ? 'rgba(255,255,255,0.1)' : 'rgba(255,255,255,0.2)',
+              border: 'none',
+              color: !canSkip ? 'rgba(255,255,255,0.5)' : 'white',
+              borderRadius: '50%',
+              width: '40px',
+              height: '40px',
+              cursor: (!playlist.length || !canSkip) ? 'not-allowed' : 'pointer',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center'
+            }}
+          >
+            ⏮
+          </button>
+          
+          <button
+            onClick={handleDirectPlayPause} // Direct control
+            disabled={shouldPulse} // Disable while pulsing
+            style={{
+              background: shouldPulse ? 'rgba(255,255,255,0.1)' : 'rgba(255,255,255,0.3)',
+              border: 'none',
+              color: shouldPulse ? 'rgba(255,255,255,0.5)' : 'white',
+              borderRadius: '50%',
+              width: '50px',
+              height: '50px',
+              cursor: shouldPulse ? 'not-allowed' : 'pointer',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              fontSize: '20px'
+            }}
+          >
+            {localIsPlaying ? '⏸' : '▶'}
+          </button>
+          
+          <button
+            onClick={handleNext}
+            disabled={!playlist.length || !canSkip}
+            title={!canSkip ? "Upgrade to Premium to skip songs" : ""}
+            style={{
+              background: !canSkip ? 'rgba(255,255,255,0.1)' : 'rgba(255,255,255,0.2)',
+              border: 'none',
+              color: !canSkip ? 'rgba(255,255,255,0.5)' : 'white',
+              borderRadius: '50%',
+              width: '40px',
+              height: '40px',
+              cursor: (!playlist.length || !canSkip) ? 'not-allowed' : 'pointer',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center'
+            }}
+          >
+            ⏭
+          </button>
+        </div>
+
+        {/* Progress Bar */}
+        <div style={{ flex: 1, display: 'flex', alignItems: 'center', gap: '10px' }}>
+          <span style={{ fontSize: '12px', minWidth: '40px' }}>{formatTime(currentTime)}</span>
+          <div
+            onClick={handleSeek}
+            title={!canSeek ? "Upgrade to Premium to seek in songs" : ""}
+            style={{
+              flex: 1,
+              height: '6px',
+              background: 'rgba(255,255,255,0.3)',
               borderRadius: '3px',
-              transition: shouldPulse ? 'none' : 'width 0.1s',
-              animation: shouldPulse ? 'subtlePulse 1.5s ease-in-out infinite' : 'none' // Slower animation
+              cursor: canSeek ? 'pointer' : 'not-allowed',
+              position: 'relative',
+              opacity: canSeek ? 1 : 0.6
+            }}
+          >
+            <div
+              style={{
+                width: shouldPulse ? '100%' : `${duration ? (currentTime / duration) * 100 : 0}%`,
+                height: '100%',
+                background: shouldPulse ? '#B0B0B0' : 'white', // Light grey instead of green
+                borderRadius: '3px',
+                transition: shouldPulse ? 'none' : 'width 0.1s',
+                animation: shouldPulse ? 'subtlePulse 1.5s ease-in-out infinite' : 'none' // Slower animation
+              }}
+            />
+            <style>
+              {`
+                @keyframes subtlePulse {
+                  0% { 
+                    background: #B0B0B0;
+                    opacity: 0.7;
+                  }
+                  50% { 
+                    background: #D0D0D0;
+                    opacity: 0.5;
+                  }
+                  100% { 
+                    background: #B0B0B0;
+                    opacity: 0.7;
+                  }
+                }
+              `}
+            </style>
+          </div>
+          <span style={{ fontSize: '12px', minWidth: '40px' }}>{formatTime(duration)}</span>
+        </div>
+
+        {/* Volume Control */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: '10px', minWidth: '120px' }}>
+          <span style={{ fontSize: '16px' }}>🔊</span>
+          <input
+            type="range"
+            min="0"
+            max="1"
+            step="0.1"
+            value={volume}
+            onChange={(e) => setVolume(parseFloat(e.target.value))}
+            style={{
+              flex: 1,
+              height: '4px',
+              background: 'rgba(255,255,255,0.3)',
+              outline: 'none',
+              borderRadius: '2px'
             }}
           />
-          <style>
-            {`
-              @keyframes subtlePulse {
-                0% { 
-                  background: #B0B0B0;
-                  opacity: 0.7;
-                }
-                50% { 
-                  background: #D0D0D0;
-                  opacity: 0.5;
-                }
-                100% { 
-                  background: #B0B0B0;
-                  opacity: 0.7;
-                }
-              }
-            `}
-          </style>
         </div>
-        <span style={{ fontSize: '12px', minWidth: '40px' }}>{formatTime(duration)}</span>
       </div>
-
-      {/* Volume Control */}
-      <div style={{ display: 'flex', alignItems: 'center', gap: '10px', minWidth: '120px' }}>
-        <span style={{ fontSize: '16px' }}>🔊</span>
-        <input
-          type="range"
-          min="0"
-          max="1"
-          step="0.1"
-          value={volume}
-          onChange={(e) => setVolume(parseFloat(e.target.value))}
-          style={{
-            flex: 1,
-            height: '4px',
-            background: 'rgba(255,255,255,0.3)',
-            outline: 'none',
-            borderRadius: '2px'
-          }}
-        />
-      </div>
-    </div>
+    </>
   );
 };
 

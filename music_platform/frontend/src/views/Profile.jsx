@@ -293,24 +293,6 @@ export default function Profile({ token, onLogout }) {
           </div>
         </div>
 
-        {/* Warning message */}
-        <div
-          style={{
-            maxWidth: '600px',
-            margin: '2rem auto 1rem',
-            padding: '1rem',
-            backgroundColor: '#f8d7da',
-            color: '#721c24',
-            border: '1px solid #f5c6cb',
-            borderRadius: 6,
-            fontWeight: 'bold',
-            textAlign: 'center',
-          }}
-        >
-          ⚠️ Warning: Deactivating your account will permanently delete all your data and cannot be undone.
-        </div>
-
-        {/* Logout and Deactivate buttons */}
         <div style={{ marginTop: '1rem', textAlign: 'center' }}>
           <button 
             onClick={onLogout}
@@ -334,6 +316,25 @@ export default function Profile({ token, onLogout }) {
             🚪 Logout
           </button>
 
+        {/* Warning message */}
+        <div
+          style={{
+            maxWidth: '600px',
+            margin: '2rem auto 1rem',
+            padding: '1rem',
+            backgroundColor: '#f8d7da',
+            color: '#721c24',
+            border: '1px solid #f5c6cb',
+            borderRadius: 6,
+            fontWeight: 'bold',
+            textAlign: 'center',
+          }}
+        >
+          ⚠️ Warning: Deactivating your account will permanently delete all your data and cannot be undone.
+        </div>
+
+        {/* Logout and Deactivate buttons */}
+        
           <button
             onClick={handleDeactivate}
             style={{
@@ -356,7 +357,7 @@ export default function Profile({ token, onLogout }) {
           </button>
         </div>
 
-        <div
+        {/* <div
           style={{
             marginTop: '2rem',
             padding: '1.5rem',
@@ -378,7 +379,7 @@ export default function Profile({ token, onLogout }) {
           <div style={{ color: '#5a6c7d', fontSize: '0.95rem' }}>
             Discover new music, create playlists, and enjoy your favorite songs.
           </div>
-        </div>
+        </div> */}
       </div>
     </div>
   );

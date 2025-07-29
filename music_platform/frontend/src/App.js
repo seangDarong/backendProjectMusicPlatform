@@ -107,7 +107,7 @@ function PlaylistsWithNavigation({ token, userId, playlistRefresh }) {
           onMouseEnter={(e) => e.target.style.backgroundColor = '#5b1a8b'}
           onMouseLeave={(e) => e.target.style.backgroundColor = '#6b21a8'}
         >
-          ➕ Create New Playlist
+          Create New Playlist
         </button>
       </div>
       <UserPlaylists 
