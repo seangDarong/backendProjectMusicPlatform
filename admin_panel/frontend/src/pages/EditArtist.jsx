@@ -1,17 +1,16 @@
 import Sidebar from '../components/Sidebar';
+import ArtistForm from '../components/ArtistForm';
 import '../styles/global.css';
 
-const ManageSubscriber = () => {
-
+const EditArtist = () => {
     return (
         <div style={{ display: 'flex' }}>
             <Sidebar />
             <div style={{ marginLeft: '240px', padding: '20px', width: '100%' }}>
-                <h1>ManageSubscriber</h1>
-                <h1>Under construction</h1>
+                <ArtistForm />
             </div>
         </div>
     );
-}
+};
 
-export default ManageSubscriber;
+export default EditArtist;

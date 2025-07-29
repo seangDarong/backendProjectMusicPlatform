@@ -53,7 +53,7 @@ export default function AlbumSongs({ albumId, token, userId, onBack, onPlaySong 
   };
 
   return (
-    <div style={{ padding: '2rem', fontFamily: 'sans-serif', backgroundColor: '#181818', minHeight: '100vh', color: 'white' }}>
+    <div style={{ padding: '2rem', fontFamily: 'sans-serif', backgroundColor: '#ffffff', minHeight: '100vh', color: '#4a4a4a' }}>
       <button 
         onClick={onBack} 
         style={{ 

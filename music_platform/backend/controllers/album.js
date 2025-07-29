@@ -13,12 +13,16 @@ const AlbumController = {
     async getAll(req, res) {
         try {
             const albums = await Album.findAll({
-                include: {
-                    model: Artist,
-                    attributes: ['artist_id', 'name', 'country'],
-                    model: Song,
-                    attributes: ['song_id', 'title', 'duration_in_sec', 'release_date']
-                }
+                include: [
+                    {
+                        model: Artist,
+                        attributes: ['artist_id', 'name', 'country']
+                    },
+                    {
+                        model: Song,
+                        attributes: ['song_id', 'title', 'duration_in_sec', 'release_date']
+                    }
+                ]
             });
             res.json(albums); 
         } catch (error) {

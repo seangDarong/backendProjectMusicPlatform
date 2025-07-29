@@ -93,15 +93,20 @@ exports.removeSongFromPlaylist = async (req, res) => {
 exports.deletePlaylist = async (req, res) => {
   try {
     const { playlistId } = req.params;
+    
+    // First, remove all songs from the playlist to avoid foreign key constraint errors
+    await PlaylistSong.destroy({ where: { playlist_id: playlistId } });
+    
+    // Then delete the playlist
     const deleted = await Playlist.destroy({ where: { playlist_id: playlistId } });
     if (deleted) {
-      res.json({ message: 'Playlist deleted!' });
+      res.json({ message: 'Playlist deleted successfully!' });
     } else {
       res.status(404).json({ message: 'Playlist not found' });
     }
   } catch (err) {
     console.error('Error deleting playlist:', err);
-    res.status(500).json({ message: 'Server error while deleting playlist' });
+    res.status(500).json({ message: 'Server error while deleting playlist: ' + err.message });
   }
 };
 

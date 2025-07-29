@@ -1,4 +1,4 @@
-const { sequelize, Song, Artist, Album } = require('../models');
+const { sequelize, Song, Artist, Album, PlaylistSong } = require('../models');
 
 const getAllSong = async (req, res) => {
     try {
@@ -67,11 +67,18 @@ const deleteSong = async (req, res) => {
     try {
         const song = await Song.findByPk(req.params.id);
         if (!song) return res.status(404).json({ error: 'Song not found' });
+        
+        // First, remove the song from all playlists to avoid foreign key constraint errors
+        await PlaylistSong.destroy({
+            where: { song_id: req.params.id }
+        });
+        
+        // Then delete the song
         await song.destroy();
-        res.json({ message: 'Song deleted' });
+        res.json({ message: 'Song deleted successfully' });
     } catch (error) {
-        console.error('Error deleting song.', error);
-        res.status(500).json({ error: 'Failed to delete song.' });
+        console.error('Error deleting song:', error);
+        res.status(500).json({ error: 'Failed to delete song: ' + error.message });
     }
 };
 

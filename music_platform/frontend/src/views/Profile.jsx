@@ -66,7 +66,7 @@ export default function Profile({ token, onLogout }) {
         style={{
           padding: '2rem',
           fontFamily: 'sans-serif',
-          backgroundColor: '#fff',
+          backgroundColor: '#ffffff',
           minHeight: '100vh',
           display: 'flex',
           justifyContent: 'center',
