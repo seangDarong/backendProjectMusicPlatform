@@ -21,7 +21,7 @@ export async function getArtistById(artistId, token) {
 }
 
 export async function getArtistAlbums(artistId, token) {
-  const res = await fetch(`http://localhost:3000/api/albums?artist=${artistId}`, {
+  const res = await fetch(`http://localhost:3000/api/albums/artist/${artistId}`, {
     headers: { 'Authorization': `Bearer ${token}` }
   });
   if (!res.ok) {

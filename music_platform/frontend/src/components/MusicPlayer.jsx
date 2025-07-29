@@ -122,7 +122,6 @@ const MusicPlayer = ({ currentSong, isPlaying, onPlayPause, onNext, onPrevious, 
   // In a real app, you'd have actual audio file URLs from your server
   const audioFiles = [
     // 'https://www.w3schools.com/html/horse.mp3',
-    'https://files.catbox.moe/o3ot2w.mov',
     'https://files.catbox.moe/ctusuv.mp3'
   ];
   const audioSrc = currentSong ? audioFiles[currentSong.song_id % audioFiles.length] || audioFiles[0] : '';

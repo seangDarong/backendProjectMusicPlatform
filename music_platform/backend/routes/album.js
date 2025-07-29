@@ -7,6 +7,25 @@ const Artist = require('../models/Artist');
 // GET /api/albums — Get all albums
 router.get('/', AlbumController.getAll);
 
+// GET /api/albums/artist/:artistId — Get albums by artist (MUST come before /:id)
+router.get('/artist/:artistId', async (req, res) => {
+  try {
+    const { artistId } = req.params;
+    const Album = require('../models/Album');
+    const albums = await Album.findAll({ 
+      where: { artist_id: artistId },
+      include: {
+        model: Artist,
+        attributes: ['artist_id', 'name', 'country']
+      }
+    });
+    res.json(albums);
+  } catch (err) {
+    console.error('Error fetching albums for artist:', err);
+    res.status(500).json({ message: 'Server error while fetching albums for artist' });
+  }
+});
+
 // POST /api/albums — Create a new album
 router.post('/', AlbumController.create);
 
