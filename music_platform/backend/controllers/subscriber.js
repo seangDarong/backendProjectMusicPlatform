@@ -66,7 +66,7 @@ const subscriberController = {
             res.json({ 
                 message: `Plan changed to ${planType}`, 
                 subscriber 
-            });
+            }); 
         } catch (error) {
             console.error('Error changing plan:', error);
             res.status(500).json({ error: 'Internal server error'});
