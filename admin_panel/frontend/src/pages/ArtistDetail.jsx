@@ -37,7 +37,7 @@ const ArtistDetail = () => {
                 <p><strong>Country:</strong> {artist.country}</p>
 
                 <div className="create-buttons">
-                    <button className="create-button" onClick={() => navigate('/albums/new')}>Create album</button>
+                    <button className="create-button" onClick={() => navigate(`/albums/new?artistId=${id}`)}>Create album</button>
                 </div>
 
                 <h3>Albums</h3>

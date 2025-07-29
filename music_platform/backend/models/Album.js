@@ -15,6 +15,10 @@ const Album = sequelize.define('Album', {
         type: DataTypes.DATEONLY, 
         allowNull: false 
     },
+    artist_id: {
+        type: DataTypes.INTEGER,
+        allowNull: false
+    },
     cover_image_url: { 
         type: DataTypes.STRING, 
         allowNull: true,

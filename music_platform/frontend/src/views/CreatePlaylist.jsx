@@ -39,7 +39,7 @@ export default function CreatePlaylist({ token, userId, onCreated }) {
   };
 
   return (
-    <div style={{ padding: '2rem', fontFamily: 'sans-serif', backgroundColor: '#fff', minHeight: '100vh' }}>
+    <div style={{ padding: '2rem', fontFamily: 'sans-serif', backgroundColor: '#ffffff', minHeight: '100vh' }}>
       <h2 style={{ color: '#2c3e50', marginBottom: '2rem', fontSize: '2rem' }}>Create New Playlist</h2>
       
       <div style={{ maxWidth: '600px', background: '#f8f9fa', borderRadius: 8, padding: '2rem', boxShadow: '0 2px 10px rgba(0,0,0,0.1)' }}>

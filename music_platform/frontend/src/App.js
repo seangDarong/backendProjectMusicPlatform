@@ -442,21 +442,22 @@ function App() {
             left: 0,
             width: '250px',
             height: '100vh',
-            backgroundColor: '#2c3e50',
+            backgroundColor: '#f5f1fb',
             padding: '1rem 0',
             display: 'flex',
             flexDirection: 'column',
-            boxShadow: '2px 0 5px rgba(0,0,0,0.1)',
+            boxShadow: '2px 0 5px rgba(234, 226, 247, 0.5)',
             zIndex: 1000,
-            overflowY: 'auto'
+            overflowY: 'auto',
+            borderRight: '1px solid #eae2f7'
           }}>
             <div style={{
               padding: '1rem 1.5rem',
-              borderBottom: '1px solid #34495e',
+              borderBottom: '1px solid #eae2f7',
               marginBottom: '1rem'
             }}>
               <h2 style={{
-                color: '#ecf0f1',
+                color: '#6b21a8',
                 margin: 0,
                 fontSize: '1.5rem',
                 fontWeight: 'bold'
@@ -471,16 +472,16 @@ function App() {
                   width: '100%',
                   padding: '1rem 1.5rem',
                   border: 'none',
-                  backgroundColor: view === 'albums' ? '#3498db' : 'transparent',
-                  color: '#ecf0f1',
+                  backgroundColor: view === 'albums' ? '#eae2f7' : 'transparent',
+                  color: view === 'albums' ? '#6b21a8' : '#6b7280',
                   textAlign: 'left',
                   fontSize: '1rem',
                   cursor: 'pointer',
                   transition: 'background-color 0.2s',
-                  borderLeft: view === 'albums' ? '4px solid #3498db' : '4px solid transparent'
+                  borderLeft: view === 'albums' ? '4px solid #6b21a8' : '4px solid transparent'
                 }}
                 onMouseEnter={(e) => {
-                  if (view !== 'albums') e.target.style.backgroundColor = '#34495e';
+                  if (view !== 'albums') e.target.style.backgroundColor = '#eae2f7';
                 }}
                 onMouseLeave={(e) => {
                   if (view !== 'albums') e.target.style.backgroundColor = 'transparent';
@@ -494,16 +495,16 @@ function App() {
                   width: '100%',
                   padding: '1rem 1.5rem',
                   border: 'none',
-                  backgroundColor: view === 'playlists' ? '#3498db' : 'transparent',
-                  color: '#ecf0f1',
+                  backgroundColor: view === 'playlists' ? '#eae2f7' : 'transparent',
+                  color: view === 'playlists' ? '#6b21a8' : '#6b7280',
                   textAlign: 'left',
                   fontSize: '1rem',
                   cursor: 'pointer',
                   transition: 'background-color 0.2s',
-                  borderLeft: view === 'playlists' ? '4px solid #3498db' : '4px solid transparent'
+                  borderLeft: view === 'playlists' ? '4px solid #6b21a8' : '4px solid transparent'
                 }}
                 onMouseEnter={(e) => {
-                  if (view !== 'playlists') e.target.style.backgroundColor = '#34495e';
+                  if (view !== 'playlists') e.target.style.backgroundColor = '#eae2f7';
                 }}
                 onMouseLeave={(e) => {
                   if (view !== 'playlists') e.target.style.backgroundColor = 'transparent';
@@ -517,16 +518,16 @@ function App() {
                   width: '100%',
                   padding: '1rem 1.5rem',
                   border: 'none',
-                  backgroundColor: view === 'profile' ? '#3498db' : 'transparent',
-                  color: '#ecf0f1',
+                  backgroundColor: view === 'profile' ? '#eae2f7' : 'transparent',
+                  color: view === 'profile' ? '#6b21a8' : '#6b7280',
                   textAlign: 'left',
                   fontSize: '1rem',
                   cursor: 'pointer',
                   transition: 'background-color 0.2s',
-                  borderLeft: view === 'profile' ? '4px solid #3498db' : '4px solid transparent'
+                  borderLeft: view === 'profile' ? '4px solid #6b21a8' : '4px solid transparent'
                 }}
                 onMouseEnter={(e) => {
-                  if (view !== 'profile') e.target.style.backgroundColor = '#34495e';
+                  if (view !== 'profile') e.target.style.backgroundColor = '#eae2f7';
                 }}
                 onMouseLeave={(e) => {
                   if (view !== 'profile') e.target.style.backgroundColor = 'transparent';

@@ -29,7 +29,14 @@ const AlbumDetail = () => {
                     >
                         &lt;
                     </h1>
-                    <h1>{album.title}</h1>
+                    <div>
+                        <h1>{album.title}</h1>
+                        {album.Artist && (
+                            <p style={{ fontSize: '1.2rem', color: '#666', margin: '0' }}>
+                                by {album.Artist.name}
+                            </p>
+                        )}
+                    </div>
                 </div>
                 
                 <hr />

@@ -25,7 +25,7 @@ app.use('/songs', songRoutes);
 app.use('/artists', artistRoutes);
 app.use('/albums', albumRoutes);
 
-sequelize.sync({ alter: true }).then(() => {
+sequelize.sync().then(() => {
     console.log('Database synced sucessfully.');
     app.listen(3002, () => {
         console.log('Admin Panel Server running on http://localhost:3002')

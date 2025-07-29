@@ -4,7 +4,7 @@ const EditAlbum = () => {
     return (
         <div>
             <h1 className="for-form">Edit album</h1>
-            <SongForm />
+            <AlbumForm />
         </div>
     );
 };

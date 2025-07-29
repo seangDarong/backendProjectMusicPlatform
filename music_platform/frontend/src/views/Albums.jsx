@@ -10,8 +10,8 @@ export default function Albums({ token, onSelectAlbum }) {
   }, [token]);
 
   return (
-    <div style={{ padding: '2rem', fontFamily: 'sans-serif', backgroundColor: '#181818', minHeight: '100vh', color: 'white' }}>
-      <h2 style={{ color: 'white', marginBottom: '2rem', fontSize: '2rem' }}>Albums</h2>
+    <div style={{ padding: '2rem', fontFamily: 'sans-serif', backgroundColor: '#ffffff', minHeight: '100vh', color: '#4a4a4a' }}>
+      <h2 style={{ color: '#6b21a8', marginBottom: '2rem', fontSize: '2rem' }}>Albums</h2>
       <div style={{ 
         display: 'grid', 
         gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))', 
@@ -20,29 +20,40 @@ export default function Albums({ token, onSelectAlbum }) {
       }}>
         {albums.map(album => (
           <div key={album.album_id} style={{ 
-            backgroundColor: '#282828', 
-            borderRadius: '8px', 
-            padding: '1rem', 
-            transition: 'background-color 0.2s',
+            backgroundColor: '#f5f1fb', 
+            borderRadius: '12px', 
+            padding: '1.2rem', 
+            transition: 'all 0.3s ease',
             cursor: 'pointer',
             display: 'flex',
-            flexDirection: 'column'
+            flexDirection: 'column',
+            boxShadow: '0 4px 12px rgba(234, 226, 247, 0.6)',
+            border: '1px solid #eae2f7'
           }}
-          onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#383838'}
-          onMouseLeave={(e) => e.currentTarget.style.backgroundColor = '#282828'}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.backgroundColor = '#eae2f7';
+            e.currentTarget.style.transform = 'translateY(-4px)';
+            e.currentTarget.style.boxShadow = '0 8px 20px rgba(234, 226, 247, 0.8)';
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.backgroundColor = '#f5f1fb';
+            e.currentTarget.style.transform = 'translateY(0px)';
+            e.currentTarget.style.boxShadow = '0 4px 12px rgba(234, 226, 247, 0.6)';
+          }}
           onClick={() => onSelectAlbum(album.album_id)}
           >
             {/* Album Cover */}
             <div style={{ 
               width: '100%', 
               aspectRatio: '1/1', 
-              backgroundColor: '#333', 
-              borderRadius: '4px', 
+              backgroundColor: '#eae2f7', 
+              borderRadius: '8px', 
               marginBottom: '1rem',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              overflow: 'hidden'
+              overflow: 'hidden',
+              border: '2px solid #d1c4e9'
             }}>
               {album.cover_image_url ? (
                 <img 
@@ -56,7 +67,7 @@ export default function Albums({ token, onSelectAlbum }) {
                 />
               ) : (
                 <div style={{ 
-                  color: '#666', 
+                  color: '#9c88d4', 
                   fontSize: '3rem',
                   textAlign: 'center'
                 }}>
@@ -70,7 +81,7 @@ export default function Albums({ token, onSelectAlbum }) {
               <div style={{ 
                 fontWeight: 'bold', 
                 fontSize: '1rem', 
-                color: 'white', 
+                color: '#4a5568', 
                 marginBottom: '0.5rem',
                 overflow: 'hidden',
                 textOverflow: 'ellipsis',
@@ -79,7 +90,7 @@ export default function Albums({ token, onSelectAlbum }) {
                 {album.title}
               </div>
               <div style={{ 
-                color: '#b3b3b3', 
+                color: '#6b46c1', 
                 fontSize: '0.875rem', 
                 marginBottom: '0.25rem',
                 overflow: 'hidden',
@@ -89,7 +100,7 @@ export default function Albums({ token, onSelectAlbum }) {
                 {album.Artist?.name || 'Unknown Artist'}
               </div>
               <div style={{ 
-                color: '#888', 
+                color: '#9c88d4', 
                 fontSize: '0.8rem' 
               }}>
                 {album.release_date}

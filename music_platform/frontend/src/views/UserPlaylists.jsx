@@ -14,10 +14,10 @@ export default function UserPlaylists({ token, userId, refresh, onSelectPlaylist
   }, [userId, token, refresh]);
 
   return (
-    <div style={{ padding: '0 2rem 2rem 2rem', fontFamily: 'sans-serif', backgroundColor: '#fff', minHeight: 'calc(100vh - 120px)' }}>
+    <div style={{ padding: '0 2rem 2rem 2rem', fontFamily: 'sans-serif', backgroundColor: '#ffffff', minHeight: 'calc(100vh - 120px)' }}>
       <ul style={{ listStyle: 'none', padding: 0, maxWidth: '800px' }}>
         {playlists.map(pl => (
-          <li key={pl.playlist_id} style={{ marginBottom: '1rem', border: '1px solid #ddd', borderRadius: 8, padding: '1.5rem', backgroundColor: '#f8f9fa', boxShadow: '0 2px 4px rgba(0,0,0,0.1)' }}>
+          <li key={pl.playlist_id} style={{ marginBottom: '1rem', border: '1px solid #eae2f7', borderRadius: 8, padding: '1.5rem', backgroundColor: '#f5f1fb', boxShadow: '0 2px 4px rgba(234, 226, 247, 0.3)' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
               <span style={{ fontWeight: 'bold', fontSize: '1.2rem', color: '#2c3e50' }}>{pl.title}</span>
               <button 
@@ -32,8 +32,8 @@ export default function UserPlaylists({ token, userId, refresh, onSelectPlaylist
                   fontSize: '1rem',
                   transition: 'background-color 0.2s'
                 }}
-                onMouseEnter={(e) => e.target.style.backgroundColor = '#2980b9'}
-                onMouseLeave={(e) => e.target.style.backgroundColor = '#3498db'}
+                onMouseEnter={(e) => e.target.style.backgroundColor = '#9c88d4'}
+                onMouseLeave={(e) => e.target.style.backgroundColor = '#6b21a8'}
               >
                 View Songs
               </button>

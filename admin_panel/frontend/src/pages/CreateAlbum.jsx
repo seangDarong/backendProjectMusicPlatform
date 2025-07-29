@@ -4,7 +4,7 @@ const CreateAlbum = () => {
     return (
         <div>
             <h1 className="for-form">Create new album</h1>
-            <SongForm />
+            <AlbumForm />
         </div>
     );
 };

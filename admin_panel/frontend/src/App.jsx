@@ -9,10 +9,12 @@ import CreateRole from './pages/CreateRole';
 import CreateUser from './pages/CreateUser';
 import CreateSong from './pages/CreateSong';
 import CreateAlbum from './pages/CreateAlbum';
+import CreateArtist from './pages/CreateArtist';
 import EditRole from './pages/EditRole';
 import EditUser from './pages/EditUser';
 import EditSong from './pages/EditSong';
 import EditAlbum from './pages/EditAlbum';
+import EditArtist from './pages/EditArtist';
 
 const App = () => {
     return (
@@ -27,10 +29,12 @@ const App = () => {
             <Route path="/users/new" element={<CreateUser />} />
             <Route path="/songs/new" element={< CreateSong/>}/>
             <Route path="/albums/new" element={< CreateAlbum/>}/>
+            <Route path="/artists/new" element={< CreateArtist/>}/>
             <Route path="/roles/edit/:id" element={<EditRole />} />
             <Route path="/users/edit/:id" element={<EditUser />} />
             <Route path="/songs/edit/:id" element={< EditSong/>}/>
             <Route path="/albums/edit/:id" element={< EditAlbum/>}/>
+            <Route path="/artists/edit/:id" element={< EditArtist/>}/>
         </Routes>
     );
 };
