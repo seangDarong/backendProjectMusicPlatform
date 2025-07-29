@@ -16,7 +16,7 @@ export default function PlanSelection({ profile, token, onPlanChange, onBack }) 
         'Create playlists',
         'Basic recommendations'
       ],
-      color: '#95a5a6',
+      color: '#9c88d4',
       buttonColor: '#7f8c8d'
     },
     {
@@ -116,7 +116,7 @@ export default function PlanSelection({ profile, token, onPlanChange, onBack }) 
         </h2>
         
         <p style={{ color: '#b3b3b3', fontSize: '1.1rem' }}>
-          Current plan: <span style={{ color: '#1db954', fontWeight: 'bold' }}>
+          Current plan: <span style={{ color: '#6b21a8', fontWeight: 'bold' }}>
             {profile?.planType === 'premium' ? 'Premium' : 'Free'}
           </span>
         </p>
@@ -140,10 +140,10 @@ export default function PlanSelection({ profile, token, onPlanChange, onBack }) 
             <div
               key={plan.id}
               style={{
-                background: isCurrentPlan ? '#1db954' : '#282828',
+                background: isCurrentPlan ? '#6b21a8' : '#f5f1fb',
                 borderRadius: '12px',
                 padding: '2rem',
-                border: isSelected ? '3px solid #1db954' : '2px solid #404040',
+                border: isSelected ? '3px solid #6b21a8' : '2px solid #9c88d4',
                 position: 'relative',
                 transition: 'all 0.3s ease',
                 cursor: 'pointer'
@@ -157,7 +157,7 @@ export default function PlanSelection({ profile, token, onPlanChange, onBack }) 
                     position: 'absolute',
                     top: '-10px',
                     right: '20px',
-                    background: '#1db954',
+                    background: '#6b21a8',
                     color: 'white',
                     padding: '0.3rem 0.8rem',
                     borderRadius: '20px',
@@ -211,7 +211,7 @@ export default function PlanSelection({ profile, token, onPlanChange, onBack }) 
                       fontSize: '0.95rem'
                     }}
                   >
-                    <span style={{ color: '#1db954', marginRight: '0.5rem' }}>✓</span>
+                    <span style={{ color: '#6b21a8', marginRight: '0.5rem' }}>✓</span>
                     {feature}
                   </li>
                 ))}
@@ -227,10 +227,10 @@ export default function PlanSelection({ profile, token, onPlanChange, onBack }) 
                 style={{
                   width: '100%',
                   background: isCurrentPlan 
-                    ? '#666' 
+                    ? '#8b5cf6' 
                     : plan.id === 'premium' 
-                      ? '#1db954' 
-                      : '#404040',
+                      ? '#6b21a8' 
+                      : '#9c88d4',
                   color: 'white',
                   border: 'none',
                   padding: '1rem',

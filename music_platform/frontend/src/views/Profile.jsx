@@ -277,7 +277,7 @@ export default function Profile({ token, onLogout }) {
               onClick={handleGoPremium}
               style={{
                 marginLeft: 'auto',
-                backgroundColor: profile.planType === 'premium' ? '#27ae60' : '#3498db',
+                backgroundColor: profile.planType === 'premium' ? '#6b21a8' : '#8b5cf6',
                 color: 'white',
                 padding: '0.5rem 1rem',
                 border: 'none',

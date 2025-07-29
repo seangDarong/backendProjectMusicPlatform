@@ -110,7 +110,7 @@ export default function CreatePlaylist({ token, userId, onCreated }) {
               style={{ 
                 flex: 1,
                 padding: '0.75rem 1.5rem', 
-                background: '#27ae60', 
+                background: '#6b21a8', 
                 color: '#fff', 
                 border: 'none', 
                 borderRadius: 6,
@@ -120,7 +120,7 @@ export default function CreatePlaylist({ token, userId, onCreated }) {
                 fontWeight: 'bold'
               }}
               onMouseEnter={(e) => e.target.style.backgroundColor = '#229954'}
-              onMouseLeave={(e) => e.target.style.backgroundColor = '#27ae60'}
+              onMouseLeave={(e) => e.target.style.backgroundColor = '#6b21a8'}
             >
               ✓ Create Playlist
             </button>
@@ -129,7 +129,7 @@ export default function CreatePlaylist({ token, userId, onCreated }) {
               onClick={() => onCreated()}
               style={{ 
                 padding: '0.75rem 1.5rem', 
-                background: '#95a5a6', 
+                background: '#8b5cf6', 
                 color: '#fff', 
                 border: 'none', 
                 borderRadius: 6,
@@ -138,7 +138,7 @@ export default function CreatePlaylist({ token, userId, onCreated }) {
                 transition: 'background-color 0.2s'
               }}
               onMouseEnter={(e) => e.target.style.backgroundColor = '#7f8c8d'}
-              onMouseLeave={(e) => e.target.style.backgroundColor = '#95a5a6'}
+              onMouseLeave={(e) => e.target.style.backgroundColor = '#8b5cf6'}
             >
               Cancel
             </button>
@@ -150,7 +150,7 @@ export default function CreatePlaylist({ token, userId, onCreated }) {
             marginTop: '1.5rem', 
             padding: '0.75rem', 
             background: status.includes('Error') ? '#fdf2f2' : '#f0f9f4', 
-            color: status.includes('Error') ? '#e74c3c' : '#27ae60', 
+            color: status.includes('Error') ? '#dc2626' : '#6b21a8', 
             border: `1px solid ${status.includes('Error') ? '#fecaca' : '#a7f3d0'}`, 
             borderRadius: 6, 
             textAlign: 'center',

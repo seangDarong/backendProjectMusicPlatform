@@ -79,18 +79,21 @@ export default function PlaylistSongs({ playlistId, token, onClose, onPlaySong }
   };
 
   return (
-    <div style={{ padding: '2rem', fontFamily: 'sans-serif', backgroundColor: '#fff', minHeight: '100vh' }}>
+    <div style={{ padding: '2rem', fontFamily: 'sans-serif', backgroundColor: '#ffffff', minHeight: '100vh', color: '#4a4a4a' }}>
       <button 
         onClick={onClose} 
         style={{ 
           marginBottom: '2rem', 
-          background: '#95a5a6', 
+          background: '#6b21a8', 
           color: '#fff', 
           border: 'none', 
           borderRadius: 6, 
           padding: '0.5rem 1rem',
-          cursor: 'pointer'
+          cursor: 'pointer',
+          transition: 'background-color 0.2s'
         }}
+        onMouseEnter={(e) => e.target.style.backgroundColor = '#5b1a8b'}
+        onMouseLeave={(e) => e.target.style.backgroundColor = '#6b21a8'}
       >
         ← Back to Playlists
       </button>
@@ -108,33 +111,38 @@ export default function PlaylistSongs({ playlistId, token, onClose, onPlaySong }
               <div style={{ fontSize: '1.1rem', fontWeight: 'bold', marginBottom: '0.5rem' }}>
                 {playlist.title}
               </div>
-              <div style={{ color: '#666', fontSize: '0.9rem', marginBottom: '1rem' }}>
+              <div style={{ color: '#8b5cf6', fontSize: '0.9rem', marginBottom: '1rem' }}>
                 {playlist.description || 'No description'}
               </div>
               <div style={{ display: 'flex', gap: '0.5rem' }}>
                 <button 
                   onClick={() => setIsEditing(true)}
                   style={{ 
-                    background: '#1976d2', 
+                    background: '#6b21a8', 
                     color: '#fff', 
                     border: 'none', 
-                    borderRadius: 4, 
+                    borderRadius: 20, 
                     padding: '0.5rem 1rem',
-                    cursor: 'pointer'
+                    cursor: 'pointer',
+                    marginRight: '0.5rem'
                   }}
+                  onMouseEnter={(e) => e.target.style.backgroundColor = '#5b1a8b'}
+                  onMouseLeave={(e) => e.target.style.backgroundColor = '#6b21a8'}
                 >
                   Edit
                 </button>
                 <button 
                   onClick={() => setShowDeleteConfirm(true)}
                   style={{ 
-                    background: '#d32f2f', 
+                    background: '#dc2626', 
                     color: '#fff', 
                     border: 'none', 
                     borderRadius: 4, 
                     padding: '0.5rem 1rem',
                     cursor: 'pointer'
                   }}
+                  onMouseEnter={(e) => e.target.style.backgroundColor = '#b91c1c'}
+                  onMouseLeave={(e) => e.target.style.backgroundColor = '#dc2626'}
                 >
                   Delete Playlist
                 </button>
@@ -198,7 +206,7 @@ export default function PlaylistSongs({ playlistId, token, onClose, onPlaySong }
                     setEditDescription(playlist.description || '');
                   }}
                   style={{ 
-                    background: '#666', 
+                    background: '#8b5cf6', 
                     color: '#fff', 
                     border: 'none', 
                     borderRadius: 4, 
@@ -218,7 +226,7 @@ export default function PlaylistSongs({ playlistId, token, onClose, onPlaySong }
         <div style={{ 
           textAlign: 'center', 
           padding: '2rem', 
-          color: '#666',
+          color: '#8b5cf6',
           background: '#f9f9f9',
           borderRadius: 8,
           border: '1px solid #ddd'
@@ -242,10 +250,10 @@ export default function PlaylistSongs({ playlistId, token, onClose, onPlaySong }
                   <div style={{ fontWeight: 'bold', fontSize: '1.1rem', marginBottom: '0.2rem' }}>
                     {song.title}
                   </div>
-                  <div style={{ color: '#666', fontSize: '0.9rem', marginBottom: '0.2rem' }}>
+                  <div style={{ color: '#8b5cf6', fontSize: '0.9rem', marginBottom: '0.2rem' }}>
                     by {song.Artist?.name || 'Unknown Artist'}
                   </div>
-                  <div style={{ color: '#666', fontSize: '0.9rem' }}>
+                  <div style={{ color: '#8b5cf6', fontSize: '0.9rem' }}>
                     Duration: {formatDuration(song.duration_in_sec)}
                   </div>
                 </div>
@@ -253,7 +261,7 @@ export default function PlaylistSongs({ playlistId, token, onClose, onPlaySong }
                   <button 
                     onClick={() => onPlaySong && onPlaySong(song, songs)} 
                     style={{ 
-                      background: '#27ae60', 
+                      background: '#6b21a8', 
                       color: '#fff', 
                       border: 'none', 
                       borderRadius: 4, 
@@ -269,7 +277,7 @@ export default function PlaylistSongs({ playlistId, token, onClose, onPlaySong }
                   <button 
                     onClick={() => handleRemove(song.song_id)} 
                     style={{ 
-                      background: '#d32f2f', 
+                      background: '#dc2626', 
                       color: '#fff', 
                       border: 'none', 
                       borderRadius: 4, 
@@ -307,7 +315,7 @@ export default function PlaylistSongs({ playlistId, token, onClose, onPlaySong }
             maxWidth: '400px',
             width: '90%'
           }}>
-            <h3 style={{ margin: '0 0 1rem 0', color: '#d32f2f' }}>
+            <h3 style={{ margin: '0 0 1rem 0', color: '#dc2626' }}>
               Delete Playlist
             </h3>
             <p style={{ margin: '0 0 1.5rem 0' }}>
@@ -317,7 +325,7 @@ export default function PlaylistSongs({ playlistId, token, onClose, onPlaySong }
               <button 
                 onClick={() => setShowDeleteConfirm(false)}
                 style={{ 
-                  background: '#666', 
+                  background: '#8b5cf6', 
                   color: '#fff', 
                   border: 'none', 
                   borderRadius: 4, 
@@ -330,7 +338,7 @@ export default function PlaylistSongs({ playlistId, token, onClose, onPlaySong }
               <button 
                 onClick={handleDeletePlaylist}
                 style={{ 
-                  background: '#d32f2f', 
+                  background: '#dc2626', 
                   color: '#fff', 
                   border: 'none', 
                   borderRadius: 4, 

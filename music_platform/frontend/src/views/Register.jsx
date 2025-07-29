@@ -135,7 +135,7 @@ export default function Register({ goToLogin }) {
           style={{ 
             width: '100%', 
             padding: '0.75rem', 
-            background: '#27ae60', 
+            background: '#6b21a8', 
             color: '#fff', 
             border: 'none', 
             borderRadius: 6,
@@ -144,7 +144,7 @@ export default function Register({ goToLogin }) {
             transition: 'background-color 0.2s'
           }}
           onMouseEnter={(e) => e.target.style.backgroundColor = '#229954'}
-          onMouseLeave={(e) => e.target.style.backgroundColor = '#27ae60'}
+          onMouseLeave={(e) => e.target.style.backgroundColor = '#6b21a8'}
         >
           Register
         </button>
@@ -155,7 +155,7 @@ export default function Register({ goToLogin }) {
           marginTop: '1rem', 
           background: 'none', 
           border: 'none', 
-          color: '#3498db', 
+          color: '#6b21a8', 
           textDecoration: 'underline', 
           cursor: 'pointer',
           fontSize: '1rem',
@@ -166,7 +166,7 @@ export default function Register({ goToLogin }) {
         Already have an account? Login here
       </button>
       {error && <div style={{ color: '#e74c3c', marginTop: '1rem', padding: '0.75rem', background: '#fdf2f2', border: '1px solid #fecaca', borderRadius: 4, textAlign: 'center' }}>{error}</div>}
-      {success && <div style={{ color: '#27ae60', marginTop: '1rem', padding: '0.75rem', background: '#f0f9f4', border: '1px solid #a7f3d0', borderRadius: 4, textAlign: 'center' }}>{success}</div>}
+      {success && <div style={{ color: '#6b21a8', marginTop: '1rem', padding: '0.75rem', background: '#f0f9f4', border: '1px solid #a7f3d0', borderRadius: 4, textAlign: 'center' }}>{success}</div>}
     </div>
   );
 }

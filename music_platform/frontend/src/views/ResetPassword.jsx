@@ -97,7 +97,7 @@
             marginTop: '1rem',
             background: 'none',
             border: 'none',
-            color: '#3498db',
+            color: '#6b21a8',
             textDecoration: 'underline',
             cursor: 'pointer',
             fontSize: '1rem',
@@ -147,7 +147,7 @@
     };
 
     const successStyle = {
-    color: '#27ae60',
+    color: '#6b21a8',
     marginTop: '1rem',
     padding: '0.75rem',
     background: '#d4f5d4',

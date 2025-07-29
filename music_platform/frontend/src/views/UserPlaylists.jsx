@@ -26,7 +26,7 @@ export default function UserPlaylists({ token, userId, refresh, onSelectPlaylist
                   padding: '0.75rem 1.5rem', 
                   borderRadius: 6, 
                   border: 'none', 
-                  background: '#3498db', 
+                  background: '#6b21a8', 
                   color: '#fff',
                   cursor: 'pointer',
                   fontSize: '1rem',

@@ -83,7 +83,7 @@ export default function Login({ onLogin, goToRegister, goToResetPassword }) {
           style={{
             background: 'none',
             border: 'none',
-            color: '#3498db',
+            color: '#6b21a8',
             textDecoration: 'underline',
             cursor: 'pointer',
             fontSize: '0.9rem',
@@ -102,7 +102,7 @@ export default function Login({ onLogin, goToRegister, goToResetPassword }) {
           style={{
             width: '100%',
             padding: '0.75rem',
-            background: '#3498db',
+            background: '#6b21a8',
             color: '#fff',
             border: 'none',
             borderRadius: 6,
@@ -111,7 +111,7 @@ export default function Login({ onLogin, goToRegister, goToResetPassword }) {
             transition: 'background-color 0.2s'
           }}
           onMouseEnter={e => (e.target.style.backgroundColor = '#2980b9')}
-          onMouseLeave={e => (e.target.style.backgroundColor = '#3498db')}
+          onMouseLeave={e => (e.target.style.backgroundColor = '#6b21a8')}
         >
           Login
         </button>
@@ -122,7 +122,7 @@ export default function Login({ onLogin, goToRegister, goToResetPassword }) {
           marginTop: '1rem',
           background: 'none',
           border: 'none',
-          color: '#3498db',
+          color: '#6b21a8',
           textDecoration: 'underline',
           cursor: 'pointer',
           fontSize: '1rem',
